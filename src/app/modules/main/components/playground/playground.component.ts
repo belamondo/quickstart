@@ -7,6 +7,12 @@ import { FormGroup, FormControl, FormGroupDirective } from '@angular/forms';
 import { AuthenticationService } from './../../../shared/services/loopback/authentication.service';
 import { CrudService } from './../../../shared/services/loopback/crud.service';
 
+/**
+ * Validators
+ */
+import { ValidateCpf } from '../../../shared/validators/cpf.validator';
+import { ValidateCnpj } from '../../../shared/validators/cnpj.validator';
+
 @Component({
   selector: 'app-playground',
   templateUrl: './playground.component.html',
@@ -15,6 +21,7 @@ import { CrudService } from './../../../shared/services/loopback/crud.service';
 export class PlaygroundComponent implements OnInit {
   public paramsToTableData: any;
   public playgroundForm: FormGroup;
+  public playgroundValidatorsForm: FormGroup;
   public tableDataError: any;
   constructor(
     private _auth: AuthenticationService,
@@ -28,11 +35,21 @@ export class PlaygroundComponent implements OnInit {
       'age': new FormControl(null),
       'biologicalSex': new FormControl(null)
     })
+
+    this.playgroundValidatorsForm = new FormGroup({
+      'cpf': new FormControl(null, ValidateCpf),
+      'cnpj': new FormControl(null, ValidateCnpj)
+    })
   }
 
   clearForm = (playgroundFormDirective: FormGroupDirective) => {    
     playgroundFormDirective.reset();
     playgroundFormDirective.resetForm();
+  }
+
+  clearValidatorForm = (playgroundValidatorsFormDirective: FormGroupDirective) => {    
+    playgroundValidatorsFormDirective.reset();
+    playgroundValidatorsFormDirective.resetForm();
   }
 
   onPlaygroundFormSubmit = () => {

@@ -20,3 +20,26 @@
     <button mat-raised-button color="primary" (click)="clearForm(playgroundFormDirective)">Limpar</button>
   </form>
 </mat-card>
+
+<mat-card class="container">
+  <form #playgroundValidatorsFormDirective="ngForm" [formGroup]="playgroundValidatorsForm" (ngSubmit)="onPlaygroundFormSubmit()">
+    <mat-card-title>Validações</mat-card-title>
+    <div class="flex">
+      <mat-form-field appearance="outline">
+        <mat-label>CPF</mat-label>
+        <mat-icon matPrefix>outlined_flag</mat-icon>
+        <input matInput formControlName="cpf" placeholder="Digite seu CPF" mask="999.999.999-99" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CNPJ</mat-label>
+        <mat-icon matPrefix>outlined_flag</mat-icon>
+        <input matInput formControlName="cnpj" placeholder="Digite seu CNPJ" required>
+      </mat-form-field>
+    </div>
+    <mat-divider [inset]="true"></mat-divider>
+
+    <button mat-raised-button color="primary" [disabled]="playgroundForm.invalid">Salvar</button>
+    <button mat-raised-button color="primary" (click)="clearForm(playgroundValidatorsFormDirective)">Limpar</button>
+  </form>
+</mat-card>

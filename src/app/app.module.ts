@@ -1,3 +1,4 @@
+import { NgxMaskModule } from 'ngx-mask';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
@@ -26,6 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
+    NgxMaskModule.forRoot(),
     HttpModule,
     SharedModule
   ],

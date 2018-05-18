@@ -19,8 +19,8 @@ import { MaterialModule } from './material.module';
  */
 import { AuthenticationService } from './services/loopback/authentication.service';
 import { CrudService } from './services/loopback/crud.service';
-import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 
+import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,16 +28,16 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     MaterialModule,
     ReactiveFormsModule,
   ], exports: [
+    DeleteConfirmComponent,
     ComponentModule,
     MaterialModule,
-    ReactiveFormsModule,
-    DeleteConfirmComponent
-  ], declarations: [
-    DeleteConfirmComponent
+    ReactiveFormsModule
   ], providers: [
     AuthenticationService,
     AuthGuard,
     CrudService
+  ], declarations: [
+    DeleteConfirmComponent
   ], entryComponents: [
     DeleteConfirmComponent
   ]
