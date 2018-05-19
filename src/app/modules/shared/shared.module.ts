@@ -20,6 +20,11 @@ import { MaterialModule } from './material.module';
 import { AuthenticationService } from './services/loopback/authentication.service';
 import { CrudService } from './services/loopback/crud.service';
 
+/**
+ * Third party modules
+ */
+import { TextMaskModule } from 'angular2-text-mask';
+
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 @NgModule({
   imports: [
@@ -27,11 +32,13 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     ComponentModule,
     MaterialModule,
     ReactiveFormsModule,
+    TextMaskModule
   ], exports: [
     DeleteConfirmComponent,
     ComponentModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TextMaskModule
   ], providers: [
     AuthenticationService,
     AuthGuard,

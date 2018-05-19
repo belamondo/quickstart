@@ -31,11 +31,26 @@ export class CrudService {
   })
 
   read = (params) => new Promise((resolve, reject) => {
-    let userData = JSON.parse(JSON.parse(sessionStorage.user)._body);
+    let route = "",
+    userData = JSON.parse(JSON.parse(sessionStorage.user)._body);
+    
+    params.route ? route = environment.crudServiceUrl + "/" + params.route + "?access_token=" + userData.id : route = params.externalRoute;
 
+
+    let headersToAuth = new Headers({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With',
+      'Access-Control-Allow-Methods': 'GET, POST'
+    });
+
+    let optionsToAuth = new RequestOptions({
+      'headers': headersToAuth
+    })
+    
     this._http
       .get(
-        environment.crudServiceUrl + "/" + params.route + "?access_token=" + userData.id
+        route,
+        optionsToAuth
       ).subscribe(res => {
         console.log(res);
       })

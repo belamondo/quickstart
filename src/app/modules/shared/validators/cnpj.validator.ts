@@ -7,7 +7,6 @@ export function ValidateCnpj(control: AbstractControl) {
         let cnpj = string.replace(/[^\d]+/g,'');
 
         if (cnpj.length != 14) {
-        this.setErrorMessage();
             return { validCnpj: false };
         } 
         // Elimina CNPJs invalidos conhecidos
@@ -21,7 +20,6 @@ export function ValidateCnpj(control: AbstractControl) {
         cnpj == "77777777777777" || 
         cnpj == "88888888888888" || 
         cnpj == "99999999999999") {
-        this.setErrorMessage();
             return { validCnpj: false };
         }
         // Valida DVs
@@ -39,7 +37,6 @@ export function ValidateCnpj(control: AbstractControl) {
 
         let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
         if (resultado != digitos.charAt(0)){
-        this.setErrorMessage();
             return { validCnpj: false };
         }
         tamanho = tamanho + 1;
