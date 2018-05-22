@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * Services
+ */
+import { CrudService } from '../../../shared/services/firebase/crud.service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,8 +12,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _crud: CrudService
+  ) { }
 
   ngOnInit() {
+    let params = {
+      route: 'test'
+    };
+    this._crud.read(params)
+    .then(res => {
+      console.log(res)
+    })
   }
 }

@@ -17,8 +17,8 @@ import { MaterialModule } from './material.module';
 /**
  * Services
  */
-import { AuthenticationService } from './services/loopback/authentication.service';
-import { CrudService } from './services/loopback/crud.service';
+import { AuthenticationService } from './services/firebase/authentication.service';
+import { CrudService } from './services/firebase/crud.service';
 
 /**
  * Third party modules

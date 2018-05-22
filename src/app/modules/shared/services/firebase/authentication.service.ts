@@ -90,11 +90,9 @@ export class AuthenticationService {
         }
       })
       .then(fbRes => {
-        if(fbRes && fbRes['uid']) {
+        if(fbRes && fbRes['user']['uid']) {
           fbRes['code'] = "l-success-01";
           fbRes['message'] = "Welcome";
-          
-          sessionStorage.setItem('user', JSON.stringify(fbRes));
 
           this._router.navigate([params.navigateTo]);
           
@@ -129,24 +127,24 @@ export class AuthenticationService {
         })
       }
 
-      sessionStorage.clear();
+      _authentication.signOut();
 
       this._router.navigate([params.navigateTo]);
     }
   })
 
   setUser = () => new Promise((res, rej) => {
-    let currentUser = JSON.parse(sessionStorage.getItem('user'));
+    _authentication.onAuthStateChanged(resAuth => {
+      if(resAuth) {
+        let user = {
+          id: resAuth.uid,
+          fbObject: resAuth
+        }
     
-    if(currentUser.uid) {
-      let user = {
-        id: currentUser.uid,
-        fbObject: currentUser
+        res(user);
+      } else {
+        res(false);
       }
-  
-      res(user);
-    } else {
-      res(false);
-    }
+    })
   })
 }

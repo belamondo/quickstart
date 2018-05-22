@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { CrudService } from '../../../shared/services/loopback/crud.service';
+import { CrudService } from '../../../shared/services/firebase/crud.service';
 
 @Component({
   selector: 'app-rule',
