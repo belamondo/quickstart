@@ -1,0 +1,53 @@
+<mat-card class="container">
+  <form [formGroup]="profileChoiceForm" (ngSubmit)="onProfileChoiceFormSubmit()">
+    <mat-card-title>Tipo de usuário</mat-card-title>
+    
+    <mat-radio-group formControlName="description">
+      <mat-radio-button value="animal">Animal</mat-radio-button>
+      <mat-radio-button value="business">Empresa</mat-radio-button>
+      <mat-radio-button value="entity">Entidade</mat-radio-button>
+      <mat-radio-button value="person">Pessoa</mat-radio-button>
+    </mat-radio-group>
+  </form>
+</mat-card>
+
+<mat-card class="container" *ngIf="profileChoiceForm.get('description').value === 'person'">
+  <form [formGroup]="peopleForm" (ngSubmit)="onPeopleFormSubmit()">
+    <mat-card-title>Perfil</mat-card-title>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
+      <input matInput placeholder="Digite seu nome" type="text" formControlName="name" required>
+    </mat-form-field>
+
+    <div class="flex">
+      <mat-radio-group formControlName="gender">
+        <mat-radio-button value="Masculino">Masculino</mat-radio-button>
+        <mat-radio-button value="Feminino">Feminino</mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nascimento</mat-label>
+        <mat-icon matPrefix>calendar_today</mat-icon>      
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" disabled required (dateChange)="onBirthdayChange($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button>Cadastrar</button>
+  </form>
+</mat-card>
+
+<mat-card class="container" *ngIf="profileChoiceForm.get('description').value === 'animal'">
+  Formulário de animal
+</mat-card>
+
+<mat-card class="container" *ngIf="profileChoiceForm.get('description').value === 'business'">
+  Formulário de empresa
+</mat-card>
+
+<mat-card class="container" *ngIf="profileChoiceForm.get('description').value === 'entity'">
+    Formulário de entidade
+  </mat-card>

@@ -47,7 +47,7 @@ export class CrudService {
         message: 'Defina parâmetros mínimos'
       })
     } else {
-      let key, obj, ref, res, objFiltered, objFilteredOnSearch, stringToFilter, functionToFilter;
+      let key, obj, ref, res, objFiltered, stringToFilter, stringCreatingFilter, functionToFilter;
     
       if(!params.route) {
         resolve({
@@ -56,36 +56,101 @@ export class CrudService {
         })
       }
 
+      if(!params.where && !params.whereId) {
+        resolve({
+          code: 'u-error-03',
+          message: 'Parâmetros conflitantes: where And whereId'
+        })
+      }
+
+      stringToFilter = "_firestore.collection(params.route)";
+      stringCreatingFilter = "";
+
+      if(params.whereId) {
+        stringCreatingFilter += ".doc('"+params.whereId+"')";
+      }
+
       if(params.where) {
         for(let lim = params.where.length, i = 0; i < lim; i++) {
-          stringToFilter += ".where('"+params.where[i].property+"', '"+params.where[i].operation+"', '"+params.where[i].value+"')";
+          stringCreatingFilter += ".where('"+params.where[i][0]+"', '"+params.where[i][1]+"', '"+params.where[i][2]+"')";
         }
-
-        stringToFilter = "_firestore.collection(params.route)" + stringToFilter;
-      } else {
-        stringToFilter = "_firestore.collection(params.route)";
       }
-      console.log(stringToFilter)
-      _firestore.collection('test').doc
+
+      stringToFilter += stringCreatingFilter;
+
       functionToFilter = eval(stringToFilter);
 
       functionToFilter
       .get()
-      .then((querySnapshot) => {
+      .then((querySnapshot) => { 
         let result = [];
-        querySnapshot.forEach((doc) => {
-          result.push({
-            _id: doc.id,
-            _data: doc.data()
-          })
-        });
+        
+        if((querySnapshot.exists && params.whereId) || (querySnapshot.docs && querySnapshot.docs.length > 0)) {
+          querySnapshot.forEach((doc) => {
+            result.push({
+              _id: doc.id,
+              _data: doc.data()
+            })
+          });
+        }
 
         resolve(result);
       })
     }
   })
 
-  updtate = (params) => new Promise((resolve, reject) => {
+  update = (params) => new Promise((resolve, reject) => {
+    if(!params) {
+      resolve({
+        code: 'u-error-01',
+        message: 'Defina parâmetros mínimos'
+      })
+    } else {
+      let key, obj, ref, res, objFiltered, stringToFilter, stringCreatingFilter, functionToFilter;
+    
+      if(!params.route) {
+        resolve({
+          code: 'u-error-02',
+          message: 'Parâmetro obrigatório: route'
+        })
+      }
 
+      if(!params.objectToUpdate) {
+        resolve({
+          code: 'u-error-03',
+          message: 'Parâmetro obrigatório: objectToUpdate'
+        })
+      }
+
+      if(!params.where && !params.whereId) {
+        resolve({
+          code: 'u-error-03',
+          message: 'Parâmetros conflitantes: where And whereId'
+        })
+      }
+
+      stringToFilter = "_firestore.collection(params.route)";
+      stringCreatingFilter = "";
+
+      if(params.whereId) {
+        stringCreatingFilter += ".doc('"+params.whereId+"')";
+      }
+      
+      if(params.where) {
+        for(let lim = params.where.length, i = 0; i < lim; i++) {
+          stringCreatingFilter += ".where('"+params.where[i][0]+"', '"+params.where[i][1]+"', '"+params.where[i][2]+"')";
+        }
+      }
+
+      stringToFilter += stringCreatingFilter;
+      
+      functionToFilter = eval(stringToFilter);
+
+      functionToFilter
+      .set(params.objectToUpdate)
+      .then(res => {
+        console.log(res)
+      })
+    }
   })
 }

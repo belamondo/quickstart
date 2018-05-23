@@ -8,3 +8,52 @@
 mat-icon {
     vertical-align: middle;
 }
+
+mat-icon {
+    vertical-align: middle;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-inline-end: 1em;
+}
+
+mat-radio-button {
+    margin-inline-end: 1em;
+}
+
+video {
+    width: 100%;
+    height: auto;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.container {
+    margin: 2%;
+}
+
+.error {
+    color: rgb(187, 16, 16);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.flex {
+    display: flex;
+}
+
+mat-radio-group {
+    width: 100%;
+}
+
+@media screen and (max-width:480px){
+	.flex {
+        display: block;
+    }
+}

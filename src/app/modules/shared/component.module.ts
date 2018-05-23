@@ -7,10 +7,10 @@ import { TableDataComponent } from './components/table-data/table-data.component
 
 @NgModule({
   exports: [
-    TableDataComponent
+    TableDataComponent,
   ],
   declarations: [
-    TableDataComponent
+    TableDataComponent,
   ]
 })
 export class ComponentModule { }

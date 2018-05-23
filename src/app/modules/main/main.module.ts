@@ -13,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MainComponent } from './main.component';
 import { PlaygroundComponent } from './components/playground/playground.component';
+import { ProfileChoiceComponent } from './components/profile-choice/profile-choice.component';
 import { RuleComponent } from './components/rule/rule.component';
 
 @NgModule({
@@ -24,7 +25,9 @@ import { RuleComponent } from './components/rule/rule.component';
   declarations: [
     DashboardComponent,
     MainComponent, 
-    PlaygroundComponent, RuleComponent
+    PlaygroundComponent, 
+    ProfileChoiceComponent,
+    RuleComponent,
   ]
 })
 export class MainModule { }

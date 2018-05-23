@@ -24,20 +24,33 @@ export class AuthGuard implements CanActivate {
     private _crud: CrudService,
     private _router: Router,
     public _snackbar: MatSnackBar
-  ) {}
+  ) { }
 
   canActivate(
     next: ActivatedRouteSnapshot, state:
-    RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean
-  {
-    
+      RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
     this._auth.setUser()
-    .then(res => {
-      if(!res || !res['id']) {
-        this._router.navigate(['/']);
-      } 
-    })
+      .then(res => {
+        if (!res || !res['id']) {
+          this._router.navigate(['/']);
+
+          this._snackbar.open('Você precisa logar para entrar.', '', {
+            duration: 4000
+          })
+
+          return false;
+        }
+
+        this._crud.read({
+          route: 'people',
+          whereId: res['id']
+        }).then(res => {
+          if (res['length'] < 1) {
+            this._router.navigate(['/main/profile_choice'])
+          }
+        })
+      })
 
     return true;
   }
