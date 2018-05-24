@@ -41,12 +41,16 @@ export class AuthGuard implements CanActivate {
 
           return false;
         }
-
+        
         this._crud.read({
           route: 'people',
           whereId: res['id']
-        }).then(res => {
-          if (res['length'] < 1) {
+        }).then(res => { 
+          if (res[0]) {
+            this._router.navigate(['/main/dashboard'])
+            console.log(res)
+            sessionStorage.setItem('name', res[0]['_data']['name']);
+          } else {
             this._router.navigate(['/main/profile_choice'])
           }
         })

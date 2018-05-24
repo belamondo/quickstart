@@ -80,6 +80,8 @@ export class AuthenticationService {
     }
     //Set params errors: end
 
+    sessionStorage.clear();
+    
     if(params.loginMode === "emailAndPassword") {
       _authentication.signInWithEmailAndPassword(params.user, params.password)
       .catch(fbErr => {
@@ -126,6 +128,8 @@ export class AuthenticationService {
           message: 'Parâmetro obrigatório: navigateTo'
         })
       }
+
+      sessionStorage.clear();
 
       _authentication.signOut();
 

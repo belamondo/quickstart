@@ -48,8 +48,8 @@ export class ProfileChoiceComponent implements OnInit {
         this._crud.read({
           route: 'people',
           whereId: res['id']
-        }).then(res => {
-          if (res['length'] > 0) {
+        }).then(resPeople => {
+          if (resPeople['length'] > 0) {
             this._router.navigate(['/main/dashboard'])
 
             this._snackbar.open('Você já escolheu seu tipo de perfil e não pode alterá-lo.', '', {

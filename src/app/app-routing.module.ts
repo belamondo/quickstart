@@ -10,8 +10,6 @@ import { LoginComponent } from './components/login/login.component';
  * Guards
  */
 import { AuthGuard } from './modules/shared/guards/auth.guard';
-import { TableComponent } from './table/table.component';
-// import { ProfileGuard } from './modules/shared/guards/profile.guard';
 
 /**
  * Modules

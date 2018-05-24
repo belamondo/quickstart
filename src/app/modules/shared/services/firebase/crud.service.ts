@@ -24,13 +24,13 @@ export class CrudService {
     if(!params) {
       resolve({
         code: 'c-error-01',
-        message: 'Defina parâmetros mínimos'
+        message: 'Minimum params required'
       })
     } else {
       if(!params.collection) {
         resolve({
           code: 'c-error-02',
-          message: 'Parâmetro obrigatório: collection'
+          message: 'Required param: collection'
         })
       }
     }
@@ -44,7 +44,7 @@ export class CrudService {
     if(!params) {
       resolve({
         code: 'r-error-01',
-        message: 'Defina parâmetros mínimos'
+        message: 'Minimum params required'
       })
     } else {
       let key, obj, ref, res, objFiltered, stringToFilter, stringCreatingFilter, functionToFilter;
@@ -52,14 +52,14 @@ export class CrudService {
       if(!params.route) {
         resolve({
           code: 'r-error-02',
-          message: 'Parâmetro obrigatório: route'
+          message: 'Required param: route'
         })
       }
 
-      if(!params.where && !params.whereId) {
+      if(params.where && params.whereId) {
         resolve({
           code: 'u-error-03',
-          message: 'Parâmetros conflitantes: where And whereId'
+          message: 'Params conflict: where AND whereId'
         })
       }
 
@@ -82,16 +82,23 @@ export class CrudService {
 
       functionToFilter
       .get()
-      .then((querySnapshot) => { 
+      .then((querySnapshot) => { console.log(querySnapshot)
         let result = [];
         
         if((querySnapshot.exists && params.whereId) || (querySnapshot.docs && querySnapshot.docs.length > 0)) {
-          querySnapshot.forEach((doc) => {
+          if(querySnapshot.docs) {
+            querySnapshot.forEach((doc) => {
+              result.push({
+                _id: doc.id,
+                _data: doc.data()
+              })
+            });
+          } else {
             result.push({
-              _id: doc.id,
-              _data: doc.data()
+              _id: querySnapshot.id,
+              _data: querySnapshot.data()
             })
-          });
+          }
         }
 
         resolve(result);
@@ -103,7 +110,7 @@ export class CrudService {
     if(!params) {
       resolve({
         code: 'u-error-01',
-        message: 'Defina parâmetros mínimos'
+        message: 'Minimum params required'
       })
     } else {
       let key, obj, ref, res, objFiltered, stringToFilter, stringCreatingFilter, functionToFilter;
@@ -111,28 +118,28 @@ export class CrudService {
       if(!params.route) {
         resolve({
           code: 'u-error-02',
-          message: 'Parâmetro obrigatório: route'
+          message: 'Required param: route'
         })
       }
 
       if(!params.objectToUpdate) {
         resolve({
           code: 'u-error-03',
-          message: 'Parâmetro obrigatório: objectToUpdate'
+          message: 'Required param: objectToUpdate'
         })
       }
 
-      if(!params.where && !params.whereId) {
+      if(params.where && params.whereId) {
         resolve({
           code: 'u-error-03',
-          message: 'Parâmetros conflitantes: where And whereId'
+          message: 'Params conflict: where AND whereId'
         })
       }
 
       stringToFilter = "_firestore.collection(params.route)";
       stringCreatingFilter = "";
-
-      if(params.whereId) {
+      console.log(params)
+      if(params.whereId) { 
         stringCreatingFilter += ".doc('"+params.whereId+"')";
       }
       
@@ -143,13 +150,15 @@ export class CrudService {
       }
 
       stringToFilter += stringCreatingFilter;
-      
       functionToFilter = eval(stringToFilter);
 
       functionToFilter
       .set(params.objectToUpdate)
       .then(res => {
-        console.log(res)
+        resolve({
+          code: 'u-success-01',
+          message: 'Update successful'
+        })
       })
     }
   })

@@ -19,11 +19,13 @@ import { AuthenticationService } from './../shared/services/firebase/authenticat
 })
 export class MainComponent implements OnInit {
   private _mobileQueryListener: () => void;
-  public options: any;
   public mobileQuery: MediaQueryList;
   public mobile = (typeof window !== 'undefined') ?
-    (window.screen.availWidth < 800) :
-    true;
+  (window.screen.availWidth < 800) :
+  true;
+  
+  public options: any;
+  public user: any;
   public views: Object[] = [{
     name: 'Painel inicial',
     icon: 'home',
@@ -76,7 +78,15 @@ export class MainComponent implements OnInit {
       .removeListener(this._mobileQueryListener);
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.user)
+    
+    if(sessionStorage && sessionStorage.getItem('name')) {
+      this.user = {
+        name: sessionStorage.getItem('name').split(" ")[0]
+      };
+    }
+  }
 
   logout = () => {
     let params = {
