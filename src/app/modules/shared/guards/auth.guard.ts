@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 /**
  * Services
  */
-import { AuthenticationService } from './../services/loopback/authentication.service';
+import { AuthenticationService } from './../services/firebase/authentication.service';
 import { MatSnackBar } from '@angular/material';
 
 /**

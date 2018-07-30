@@ -8,6 +8,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MainComponent } from './main.component';
 import { PlaygroundComponent } from './components/playground/playground.component';
 import { RuleComponent } from './components/rule/rule.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { UserComponent } from './components/user/user.component';
+import { UserRegisterComponent } from './components/user-register/user-register.component';
 
 const routes: Routes = [{
   path: '', component: MainComponent, children: [{
@@ -23,6 +26,18 @@ const routes: Routes = [{
   }, {
     path: 'playground',
     component: PlaygroundComponent
+  },{
+    path:'profile',
+    component:ProfileComponent
+  },{
+    path:'user',
+    component:UserComponent
+  },{
+    path:'user-register',
+    component:UserRegisterComponent
+  },{
+    path:'user-register/:id',
+    component:UserRegisterComponent
   }]
 }];
 

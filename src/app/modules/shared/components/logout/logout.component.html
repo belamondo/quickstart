@@ -1,0 +1,10 @@
+<span *ngIf="errors.length < 1">
+  <a (click)="logout()">
+    <mat-icon class="mat-18 mat-icon-color" matTooltip="Sair">{{mdIcon}}</mat-icon>
+  </a>
+</span>
+
+<span *ngIf="errors.length > 0">
+  <mat-error *ngFor="let error of errors">{{error.cod}} - {{error.message}}</mat-error>
+</span>
+  

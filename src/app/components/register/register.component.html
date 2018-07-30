@@ -1,0 +1,175 @@
+<div id="close">
+  <a (click)="close()">
+    <mat-icon class="icon-pattern">close</mat-icon>
+  </a>
+</div>
+
+<h4 mat-dialog-title class="title">CADASTRO DE USUÁRIO</h4>
+
+<form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+  <div>
+    <mat-radio-button *ngFor="let item of personArray; let i=index" name="person_type_id" color="primary" [checked]="item.id == 1" [value]="item.id" (change)="choose($event)">{{item.description}}</mat-radio-button>
+    <div class="form-pattern" *ngIf="!typeForm"> 
+      <mat-form-field class="half-input">
+        <mat-icon class="icon-pattern" matPrefix>person</mat-icon>
+        <input matInput formControlName="social_name" type="text" placeholder="Razão Social">
+        <mat-error *ngIf="registerForm.get('social_name').errors && registerForm.get('social_name').touched">{{registerForm.get('social_name').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="form-pattern" *ngIf="!typeForm">
+      <mat-form-field class="half-input">
+        <mat-icon class="icon-pattern" matPrefix>person</mat-icon>
+        <input matInput formControlName="fantasy_name" type="text" placeholder="Nome Fantasia">
+        <mat-error *ngIf="registerForm.get('fantasy_name').errors && registerForm.get('fantasy_name').touched">{{registerForm.get('fantasy_name').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-pattern" *ngIf="!typeForm">
+      <mat-form-field>
+        <mat-icon class="icon-pattern" matPrefix>credit_card</mat-icon>
+        <input matInput formControlName="document_number" type="text" placeholder="CNPJ" required [textMask]="{mask: mask.cnpj}">
+        <mat-error *ngIf="registerForm.get('document_number').errors && registerForm.get('document_number').touched">{{registerForm.get('document_number').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="form-pattern" *ngIf="typeForm">      
+      <mat-form-field class="half-input">
+        <mat-icon class="icon-pattern" matPrefix>person</mat-icon>
+        <input matInput formControlName="name" type="text" placeholder="Nome completo">
+        <mat-error *ngIf="registerForm.get('name').errors && registerForm.get('name').touched">{{registerForm.get('name').errors.message}}</mat-error>
+      </mat-form-field>
+    </div> 
+    
+    <div class="form-pattern" *ngIf="typeForm">
+      <mat-form-field>
+        <mat-icon class="icon-pattern" matPrefix>credit_card</mat-icon>
+        <input matInput formControlName="document_number" type="text" placeholder="CPF" [textMask]="{mask: mask.cpf}" required>
+        <mat-error *ngIf="registerForm.get('document_number').errors && registerForm.get('document_number').touched">{{registerForm.get('document_number').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="form-pattern">
+      <mat-form-field class="half-input">
+        <mat-icon class="icon-pattern" matPrefix>email</mat-icon>
+        <input matInput formControlName="email" type="text" placeholder="E-mail" required>        
+        <mat-error *ngIf="registerForm.get('email').errors && registerForm.get('email').touched">{{registerForm.get('email').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div formArrayName="contacts">
+      <div *ngFor="let contact of registerForm.controls.contacts.controls; let i=index">
+        <div [formGroupName]="i">
+          <div [ngClass]="widthHalf">
+            <mat-form-field class="half-input">
+              <mat-icon class="icon-pattern" matPrefix>description</mat-icon>
+              <mat-select placeholder="Tipo de Contato" formControlName="contact_type_id" required>
+                <mat-option *ngFor="let item of contactsArray" [value]="item.id">
+                  {{ item.description }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="contact.get('contact_type_id').errors && contact.get('contact_type_id').touched">{{contact.get('contact_type_id').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+        
+          <div [ngClass]="widthHalf">
+            <mat-form-field>
+              <mat-icon class="icon-pattern" matPrefix>phone</mat-icon>
+              <input matInput formControlName="description" type="text" placeholder="Contato" required [textMask]="{mask: mask.phone}">
+              <mat-error *ngIf="contact.get('description').errors && contact.get('description').touched">{{contact.get('description').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div formArrayName="addresses">
+      <div *ngFor="let address of registerForm.controls.addresses.controls; let i=index" [ngStyle]="{'padding-top': '15px'}">
+        <div [formGroupName]="i">
+          <div [ngClass]="widthHalf">
+            <mat-form-field class="half-input">
+              <mat-icon class="icon-pattern" matPrefix>description</mat-icon>
+              <mat-select placeholder="Tipo de Endereço" formControlName="address_type_id" required>
+                <mat-option *ngFor="let item of addressesArray" [value]="item.id">
+                  {{ item.description }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="address.get('address_type_id').errors && address.get('address_type_id').touched">{{address.get('address_type_id').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+        
+          <div [ngClass]="widthHalf">            
+            <mat-form-field>
+              <mat-icon class="icon-pattern" matPrefix>location_on</mat-icon>
+              <input matInput formControlName="place" type="text" placeholder="Endereço" required tag="input">
+              <mat-error *ngIf="address.get('place').errors && address.get('place').touched">{{address.get('place').errors.message}}</mat-error>
+            </mat-form-field>
+          </div> 
+        
+          <div [ngClass]="widthHalf">            
+            <mat-form-field>
+              <mat-icon class="icon-pattern" matPrefix>location_on</mat-icon>
+              <input matInput formControlName="neighborhood" type="text" placeholder="Bairro" required>
+              <mat-error *ngIf="address.get('neighborhood').errors && address.get('neighborhood').touched">{{address.get('neighborhood').errors.message}}</mat-error>
+            </mat-form-field>
+          </div> 
+        
+          <div [ngClass]="widthHalf">
+            <mat-form-field>
+              <mat-icon class="icon-pattern" matPrefix>local_post_office</mat-icon>
+              <input matInput formControlName="postal_code" type="text" placeholder="CEP" [textMask]="{mask: mask.zip}" required>
+              <mat-error *ngIf="address.get('postal_code').errors && address.get('postal_code').touched">{{address.get('postal_code').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+        
+          <div [ngClass]="widthHalf">
+            <mat-form-field class="half-input">
+              <mat-icon class="icon-pattern" matPrefix>location_on</mat-icon>
+              <mat-select placeholder="Município" formControlName="city_id" required>
+                <mat-option *ngFor="let item of citiesArray" [value]="item.id">
+                  {{ item.description }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="address.get('city_id').errors && address.get('city_id').touched">{{address.get('city_id').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+        
+          <div [ngClass]="widthHalf">
+            <mat-form-field class="half-input">
+              <mat-icon class="icon-pattern" matPrefix>location_on</mat-icon>
+              <mat-select placeholder="Estado" formControlName="state_id" required>
+                <mat-option *ngFor="let item of stateArray" [value]="item.id">
+                  {{ item.description }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="address.get('state_id').errors && address.get('state_id').touched">{{address.get('state_id').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div [ngClass]="widthHalf">
+      <mat-form-field>
+        <mat-icon class="icon-pattern" matPrefix>lock</mat-icon>
+        <input matInput formControlName="password" type="password" placeholder="Senha" required>        
+        <mat-error *ngIf="registerForm.get('password').errors && registerForm.get('password').touched">{{registerForm.get('password').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div [ngClass]="widthHalf">
+      <mat-form-field>
+        <mat-icon class="icon-pattern" matPrefix>lock</mat-icon>  
+        <input matInput formControlName="repeatPassword" type="password" placeholder="Repetir senha" required>
+        <mat-error *ngIf="registerForm.get('repeatPassword').errors && registerForm.get('repeatPassword').touched">{{registerForm.get('repeatPassword').errors.message}}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="box-clear">
+    <div class="box-left">
+      <button mat-raised-button type="submit" color="primary" [disabled]="!registerForm.valid">Registrar</button>
+    </div>
+    <div class="box-clear"></div>
+  </mat-dialog-actions>
+</form>

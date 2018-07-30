@@ -6,5 +6,7 @@
 export const environment = {
   production: false,
   authenticationServiceUrl: 'http://localhost:3000/api',
-  crudServiceUrl: 'http://localhost:3000/api'
+  crudServiceUrl: 'http://localhost:3000/api',
+  urlToOauthToken: '',
+  urlToApi:''
 };

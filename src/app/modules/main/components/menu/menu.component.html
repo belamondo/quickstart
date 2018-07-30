@@ -1,0 +1,42 @@
+<div class="form-box">
+  <div class="form-box-title">
+    <div>{{title}}</div>
+  </div>
+  <mat-card>
+    <form [formGroup]="menuForm" #formDirective="ngForm" (ngSubmit)="onMenuSubmit(formDirective)">
+      <div id="div-form" >
+        <div [ngClass]="widthThird">
+          <mat-form-field class="initial-input"> 
+            <mat-icon class="icon-pattern" matPrefix>description</mat-icon> 
+            <input matInput formControlName="description" type="text" placeholder="Menu">
+          </mat-form-field>
+        </div>
+
+        <div [ngClass]="widthThird">
+          <mat-form-field>
+            <mat-icon class="icon-pattern" matPrefix>touch_app</mat-icon> 
+            <input matInput formControlName="route" type="text" placeholder="Rota">
+          </mat-form-field>
+        </div>
+
+        <div [ngClass]="widthThird">
+          <mat-form-field>
+            <mat-icon class="icon-pattern" matPrefix>touch_app</mat-icon> 
+            <input matInput formControlName="route_back" type="text" placeholder="Rota Back">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-slide-toggle formControlName="deleted_at" (change)="active($event)" >{{status}}</mat-slide-toggle>
+        </div>
+      </div>
+      <div class="buttons-pattern">
+        <button mat-raised-button type="submit" color="primary" [disabled]="!menuForm.valid">{{submitButton}}</button>
+        <a mat-raised-button (click)="clearForm(formDirective)">Limpar</a>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<!-- <ntm-table-data [params]="paramsToTableData"></ntm-table-data>
+ -->
+ <app-ntm-table-data [params]="paramsToTableData"></app-ntm-table-data>

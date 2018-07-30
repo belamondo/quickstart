@@ -1,0 +1,56 @@
+<div class="form-box">
+    <div class="form-box-title">
+      <div>{{title}}</div>
+    </div>
+    <mat-card>
+  
+      <form [formGroup]="profileForm" #formDirective="ngForm" (ngSubmit)="onProfileSubmit(formDirective)">
+        <div class="div-form">
+          <div>    
+            <mat-form-field class="">
+              <mat-icon class="icon-pattern" matPrefix>perm_contact_calendar</mat-icon>
+              <input matInput formControlName="description" type="text" placeholder="Perfil de acesso" required>
+              <mat-error *ngIf="profileForm.get('description').errors && profileForm.get('description').touched">{{profileForm.get('description').errors.message}}</mat-error>
+            </mat-form-field>
+          </div>
+    
+          <div>
+            <div class="form-pattern-slide-area">    
+              <mat-slide-toggle formControlName="deleted_at" (change)="active($event)" color="primary">{{status}}</mat-slide-toggle>
+            </div>
+          </div> 
+        </div>    
+
+        <mat-card>
+          <mat-toolbar>
+            <div id="toolbar-title">Menu e Permissões</div>
+          </mat-toolbar>
+
+          <div>
+            <table>
+              <th>Menu</th>
+              <th *ngFor="let rule of rules" [ngStyle]="{'text-align': 'center'}">
+                <mat-checkbox (change)="checkallMenu(rule.id,$event)" >{{rule.description}}</mat-checkbox>
+              </th>
+              <tbody id="permission">
+                <tr *ngFor="let menu of menus; let i = index">
+                  <td id="menu"><mat-checkbox (change)="checkallRule(menu.id,$event)">{{menu.description}}</mat-checkbox></td>
+                  <td *ngFor="let rule of menu.rules; let j = index" [ngStyle]="{'text-align': 'center'}">
+                    <mat-checkbox #myCheckbox value="{{rule.id}}" name="{{menu.id}}" [checked]="rule._checked"></mat-checkbox>                  
+                  </td>
+                </tr> 
+              </tbody> 
+            </table>
+          </div>
+        </mat-card>
+
+        <div class="buttons-pattern">
+          <button mat-raised-button type="submit" color="primary" [disabled]="!profileForm.valid">{{submitButton}}</button>  
+          <a mat-raised-button (click)="clearForm()" [disabled]="!profileForm.get('description')">Limpar</a>
+          <a mat-raised-button routerLink="/main/profile">Voltar</a>
+        </div>
+        
+      </form>
+    </mat-card>
+  </div>
+

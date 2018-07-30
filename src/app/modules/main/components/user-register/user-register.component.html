@@ -1,0 +1,111 @@
+<div class="form-box">
+    <div class="form-box-title">
+      <div>{{title}}</div>
+    </div>
+    <mat-card>
+      <form [formGroup]="userRegisterForm" #formDirective="ngForm" (ngSubmit)="onUserSubmit(formDirective)">
+        <div [ngClass]="widthHalf">
+          
+          <mat-form-field class="half-input">
+            <mat-icon class="icon-pattern" matPrefix>person</mat-icon>
+            <input matInput formControlName="name" type="text" placeholder="Nome completo">
+            <mat-icon matSuffix (click)="searchLogin()" [ngStyle]="{'cursor': 'pointer'}">search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div [ngClass]="widthHalf"><mat-progress-spinner  *ngIf="progress" [color]="color" [mode]="mode"></mat-progress-spinner></div> 
+        
+        <div  class="form-pattern">          
+          <mat-form-field class="half-input">
+            <mat-icon class="icon-pattern" matPrefix>email</mat-icon>
+            <input matInput formControlName="email" type="text" placeholder="E-mail">
+          </mat-form-field>
+        </div>
+        
+        
+      
+        <div [ngClass]="widthHalf">
+          
+          <mat-form-field>
+            <mat-icon class="icon-pattern" matPrefix>phone</mat-icon>
+            <input matInput formControlName="telephone_number" type="text" placeholder="Telefone fixo" 
+            [textMask]="{mask: mask.phone}">
+            <mat-hint *ngIf="phoneErrors">{{phoneErrors}}</mat-hint>
+          </mat-form-field>
+        </div>
+      
+        <div [ngClass]="widthHalf">
+          
+          <mat-form-field>
+            <mat-icon class="icon-pattern" matPrefix>smartphone</mat-icon>
+            <input matInput formControlName="mobilephone_number" type="text" placeholder="Telefone celular" 
+            [textMask]="{mask: mask.cell_phone}">
+          </mat-form-field>
+        </div>
+      
+        <div [ngClass]="widthHalf">
+          
+          <mat-form-field class="half-input">
+            <mat-icon class="icon-pattern" matPrefix>location_on</mat-icon>
+            <mat-select placeholder="UF" formControlName="uf_id">
+              <mat-option *ngFor="let uf of ufArray" [value]="uf.id">
+                {{ uf.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div [ngClass]="widthHalf">
+          
+          <mat-form-field class="half-input">
+            <mat-icon class="icon-pattern" matPrefix>account_circle</mat-icon>
+            <mat-select placeholder="Perfil" formControlName="profiles_id">
+              <mat-option *ngFor="let item of profileArray" [value]="item.id">
+                {{ item.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div [ngClass]="{'hide': !show, 'form-pattern-half': show}">
+          
+          <mat-form-field>
+            <mat-icon class="icon-pattern" matPrefix>lock</mat-icon>
+            <input matInput formControlName="password" type="password" placeholder="Senha*" tag="input" validatorField validatorPassword [required]="show">
+          </mat-form-field>
+        </div>
+      
+        <div [ngClass]="{'hide': !show, 'form-pattern-half': show}">
+          
+          <mat-form-field >
+            <mat-icon class="icon-pattern" matPrefix>lock</mat-icon>
+            <input  matInput formControlName="repeatPassword" type="password" placeholder="Repetir senha" tag="input" [required]="show" validatorField validatorPassword validatorComparison fieldsToCompare="password,repeatPassword">
+          </mat-form-field>
+        </div>
+
+        <div  class="form-pattern" [ngClass]="{'hide': !chengePassword}"> 
+          <mat-checkbox formControlName="change_password" [required]="show">Solicitar alteração da senha</mat-checkbox> 
+        </div>
+
+        <div  class="form-pattern" [ngStyle]="{'line-height': '50px'}">
+          <mat-slide-toggle formControlName="deleted_at" (change)="active($event)">{{status}}</mat-slide-toggle>
+        </div>
+      
+        <mat-dialog-actions class="box-clear">
+          <div class="box-left">
+            <button mat-raised-button type="submit" color="primary" [disabled]="!userRegisterForm.valid">{{submitButton}}</button> 
+            <a mat-raised-button (click)="clearForm()" >Limpar</a>
+            <a mat-raised-button routerLink="/main/user">Voltar</a>
+          </div>
+      
+          <div class="box-left" [ngStyle]="{'margin-top': '15px'}">
+            **Senhas devem conter no mínimo 8 caracteres, com letras maiúsculas e minúsculas, ao menos um número e um caracter especial.
+          </div>
+      
+          <div class="box-clear"></div>
+          <!-- <a mat-raised-button (click)="clearForm($event)">Limpar</a> -->
+        </mat-dialog-actions>
+      </form>
+    </mat-card>
+  </div>
+  

@@ -1,0 +1,22 @@
+/* #div-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+#div-form div {
+    width: 40%;
+}
+
+#div-form div:nth-child(3) {
+    line-height: 50px;
+    width: 20%;
+    padding-left: 15px;
+} */
+
+mat-form-field {
+    width: 90%;
+}
+
+mat-icon {
+    vertical-align: middle;
+}

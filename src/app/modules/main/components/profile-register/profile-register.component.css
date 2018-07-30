@@ -1,0 +1,72 @@
+table {
+    width: 100%;
+}
+
+td {
+    border-top: 1px #EEEEEE solid;
+    padding: 15px;
+}
+
+th {
+    border: none;
+    color: #BDBDBD;
+    padding: 15px;
+}
+
+/deep/ .mat-toolbar {
+    background: white;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+#toolbar-title {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bolder;
+    left: 0;
+    margin: 0;
+    margin-right: 30px;
+    width: auto;
+}
+
+/deep/ .mat-card{
+    margin: 15px 0px 15px 0px;
+}
+
+.div-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.div-form div {
+    width: 50%;
+}
+
+/deep/ mat-form-field {
+    width: 90%;
+}
+
+/deep/ mat-icon {
+    cursor: pointer;
+}
+
+.div-form div:nth-child(2) {
+    line-height: 50px; 
+}
+
+.click{
+    pointer-events: none;
+    color: #dddddd;
+    cursor: auto;
+}
+
+td, th > a {
+    cursor: pointer;
+}
+
+/deep/th > mat-checkbox > label >.mat-checkbox-inner-container{
+    display: none;
+}
+
+/deep/#menu > mat-checkbox > label >.mat-checkbox-inner-container{
+    display: none;
+}

@@ -1,0 +1,17 @@
+/deep/ mat-progress-spinner svg, /deep/ mat-progress-spinner { 
+    width: 20px !important; 
+    height: 20px !important; 
+}
+
+/* /deep/ .mat-form-field{
+    width: 99%;
+} */
+
+form div:nth-child(2){
+    height: 4vh;
+    padding-top: 15px;
+}
+
+.hide {
+    display: none;
+}

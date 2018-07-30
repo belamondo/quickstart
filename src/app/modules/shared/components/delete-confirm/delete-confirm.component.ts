@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 /*Services*/
-import { CrudService } from './../../services/loopback/crud.service';
+import { CrudService } from './../../services/firebase/crud.service';
 
 @Component({
   selector: 'ntm-delete-confirm',
@@ -36,16 +36,16 @@ export class DeleteConfirmComponent implements OnInit {
   }
    
   delete() {
-    this.crud.delete({route: this.data.routeToApi,paramToDelete: this.data.paramToDelete})
-    .then(() => {
-      this.router.navigate([this.data.routeAfterDelete]);
+    // this.crud.delete({route: this.data.routeToApi,paramToDelete: this.data.paramToDelete})
+    // .then(() => {
+    //   this.router.navigate([this.data.routeAfterDelete]);
 
-      let string = this.data.paramToDelete.length + " item(ns) apagado(s)";
+    //   let string = this.data.paramToDelete.length + " item(ns) apagado(s)";
 
-      this.matsnackbar.open(string, '', {
-        duration: 3000
-      });
-    });
+    //   this.matsnackbar.open(string, '', {
+    //     duration: 3000
+    //   });
+    // });
     
     this.dialogRef.close(true);
   }

@@ -42,7 +42,7 @@ export class AuthenticationService {
     public _snackbar: MatSnackBar
   ) {}
 
-  login = (params) => new Promise((res, rej) =>{ 
+  login = (params) => new Promise((res, rej) =>{
     //Set params errors: start
     if(!params) {
       res({
@@ -90,7 +90,7 @@ export class AuthenticationService {
         }
       })
       .then(fbRes => {
-        if(fbRes && fbRes['uid']) {
+        if(fbRes && fbRes['user']['uid']) {
           fbRes['code'] = "l-success-01";
           fbRes['message'] = "Welcome";
           

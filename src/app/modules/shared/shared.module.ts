@@ -17,9 +17,12 @@ import { MaterialModule } from './material.module';
 /**
  * Services
  */
-import { AuthenticationService } from './services/loopback/authentication.service';
-import { CrudService } from './services/loopback/crud.service';
+import { AuthenticationService } from './services/firebase/authentication.service';
+import { CrudService } from './services/laravel/crud.service';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   imports: [
@@ -27,19 +30,27 @@ import { DeleteConfirmComponent } from './components/delete-confirm/delete-confi
     ComponentModule,
     MaterialModule,
     ReactiveFormsModule,
+    TextMaskModule
   ], exports: [
     ComponentModule,
+    LogoutComponent,
     MaterialModule,
     ReactiveFormsModule,
-    DeleteConfirmComponent
+    DeleteConfirmComponent,
+    ForgotPasswordComponent,
+    TextMaskModule
+
   ], declarations: [
-    DeleteConfirmComponent
+    DeleteConfirmComponent,
+    ForgotPasswordComponent,
+    LogoutComponent
   ], providers: [
     AuthenticationService,
     AuthGuard,
     CrudService
   ], entryComponents: [
-    DeleteConfirmComponent
+    DeleteConfirmComponent,
+    ForgotPasswordComponent
   ]
 })
 export class SharedModule { }

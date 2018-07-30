@@ -1,0 +1,64 @@
+mat-hint {
+  color: red;
+  font-size: 10px;
+}
+  
+  .box-left {
+    float: left;
+    padding: 5px;
+  }
+  
+  .box-clear {
+    clear: both;
+  }
+  
+  mat-card-action {
+    display: flex;
+  }
+  
+  #close a {
+    float: left;
+    cursor: pointer;
+  }
+  
+  #close div {
+    float: left;
+  }
+  
+  #footer-area {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #footer-area p {
+    width: 60%;
+    font-size: 10px;
+    text-align: right;
+  }
+
+  #close{
+    float: right;
+  }
+
+  .title{
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .content{
+    display: block;
+    max-height: 650px;
+    overflow-y: scroll;
+  }
+
+  .remove{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    vertical-align: middle;
+  }
+
+  .remove > span > mat-icon{
+    cursor: pointer;
+  }
+  
