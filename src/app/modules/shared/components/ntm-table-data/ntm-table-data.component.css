@@ -1,0 +1,286 @@
+mat-card {
+    margin: 0;
+    padding: 0;
+}
+
+.mat-column-name, .cdk-column-companies, .mat-column-profiles{
+    width: 20%;
+    flex: unset;
+}
+
+.cdk-column-sended_at, .cdk-column-categories{
+    width: 9%;
+    flex: unset;
+} 
+.cdk-column-updated_at{
+    width: 4%;
+    flex: unset;
+}
+.cdk-column-id{
+    width: 2%;
+    flex: unset;
+    overflow: unset !important;
+    word-break: break-all;
+}
+
+.cdk-column-is_approved{
+    width: 7%;
+    align-items: center;
+    flex: unset;
+}
+
+.cdk-column-origin, .mat-column-deleted_at{
+    width: 7%;
+    flex: unset;
+}
+
+.mat-column-uf{
+    width: 4%;
+    flex: unset;
+}
+
+.cdk-column-cpf_number, .mat-column-initial_date, .mat-column-end_date,.cdk-column-is_accredited{
+    width: 10%;
+    flex: unset;
+}
+
+.cdk-column-is_accredited a{
+    word-break: break-all !important;
+}
+
+.pages > .mat-paginator-container {
+    justify-content: space-between !important;
+}
+
+/* /deep/ mat-cell,mat-header-cell{
+    text-align: left !important;
+    padding: 0 10px;
+}
+
+
+/deep/ mat-cell, mat-header-cell{
+    overflow: unset !important;
+    word-break: break-all;
+} */
+
+.icon-sort{
+    font-size: 16px;
+    height: 14px;
+    width: 12px;
+    min-width: 12px;
+    margin: -2px 0 0 6px;
+    position: relative;
+    display: flex;
+}
+
+.last{
+    text-align: right !important;
+}
+
+.fade-input{
+    width: 90% !important;
+}
+
+.show-input{
+    /* display: none; */
+    width: 0% !important;
+}
+
+.custom-input .mat-form-field-underline {
+    background-color: white !important;
+}
+
+.fade{
+    pointer-events: none;
+    color: #ccc !important;
+}
+
+
+.toolbar-icon {
+    color: #fff;
+}
+
+/* #toolbar-action  /deep/ .mat-select-arrow {
+    color: #ffeb3b;
+}
+
+#toolbar-action /deep/ .mat-form-field-label{
+    color: rgba(255, 255, 255, 1);
+}
+
+#toolbar-action /deep/ .mat-form-field-underline{
+    background-color: rgba(255, 255, 255, 1);
+} */
+
+/* /deep/ .mat-checkbox-inner-container {
+  background: #fff;
+  border-radius: 3px; 
+} */
+
+a {
+    cursor: pointer;    
+}
+
+.div-inline {
+    display: inline;
+} 
+
+table {
+    width: 100%;
+}
+
+td {
+    border-top: 1px #EEEEEE solid;
+    padding: 15px;
+}
+
+th mat-icon {
+    color: #BDBDBD;
+}
+
+th a mat-icon {
+    vertical-align: middle;
+}
+
+#input-search{
+    color: white;
+}
+div a mat-icon {
+    vertical-align: -webkit-baseline-middle;
+}
+
+div span{
+    vertical-align: middle;
+}
+
+th {
+    border: none;
+    color: #BDBDBD;
+    padding: 15px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.div-foot-pattern {
+    background-color: transparent;
+    font-size: 14px; 
+    vertical-align: middle;
+    padding: 10px 0 10px 0; 
+}
+
+.text-fix{
+    font-size: 16px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.dropdown-table-pattern{
+    height: 698;
+    width: 320;
+}
+
+.search-pattern{
+    padding-top: 3px;
+    font-size: 17px;
+    font-weight: normal;
+}
+.font-pattern{
+    text-align: left;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.list-item:hover {
+    background: #EEEEEE;
+}
+
+.list-item span {
+    margin-right: 15px;
+}
+
+.list-item-actions {
+    right: 0;
+    text-align: right;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+#footer-toolbar {
+    width: 100%;
+}
+
+#list-controllers {
+    font-size: 16px;
+    width: 100%;
+}
+
+#list-controllers mat-icon {
+    font-size: 16px;
+}
+
+#list-item-checkbox {
+    left: 0;
+    text-align: left;
+    width: 10px;
+}
+
+#page-area {
+    float: left;
+    padding-left: 40%;
+    width: 50%;
+}
+
+#row-area {
+    float: left;
+    /*margin-left: -10px;*/
+    width: 50%;
+    height: 64px;
+}
+
+#toolbar-action {
+    font-size: 20px;
+    font-weight: bolder;
+    right: 0;
+    margin: 0;
+    text-align: right;
+    width: 100%;
+}
+
+#toolbar-spacer {
+    font-size: 20px;
+    font-weight: bolder;
+    left: 0;
+    margin: 0;
+    width: 10%;
+}
+
+#toolbar-title {
+    color: white;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bolder;
+    left: 0;
+    margin: 0;
+    margin-left: 30px;
+    margin-right: 30px;
+    width: auto;
+}
+
+@media only screen and (max-device-width: 320px) {
+    #toolbar-action {
+        font-size: 20px;
+        font-weight: bolder;
+        right: 0;
+        margin-right: 0;
+        width: 65%;
+    }
+}
+

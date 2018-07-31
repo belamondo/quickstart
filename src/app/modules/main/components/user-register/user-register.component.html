@@ -24,7 +24,7 @@
         
         
       
-        <div [ngClass]="widthHalf">
+        <div class="flex">
           
           <mat-form-field>
             <mat-icon class="icon-pattern" matPrefix>phone</mat-icon>
@@ -32,16 +32,18 @@
             [textMask]="{mask: mask.phone}">
             <mat-hint *ngIf="phoneErrors">{{phoneErrors}}</mat-hint>
           </mat-form-field>
-        </div>
-      
-        <div [ngClass]="widthHalf">
-          
+
           <mat-form-field>
             <mat-icon class="icon-pattern" matPrefix>smartphone</mat-icon>
             <input matInput formControlName="mobilephone_number" type="text" placeholder="Telefone celular" 
             [textMask]="{mask: mask.cell_phone}">
           </mat-form-field>
         </div>
+      
+        <!-- <div [ngClass]="widthHalf">
+          
+         
+        </div> -->
       
         <div [ngClass]="widthHalf">
           

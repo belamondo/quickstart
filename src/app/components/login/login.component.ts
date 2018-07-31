@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material';
 /**
  * Services
  */
-import { AuthenticationService } from './../../modules/shared/services/firebase/authentication.service';
+import { AuthenticationService } from './../../modules/shared/services/laravel/authentication.service';
 
 
 @Component({
@@ -35,10 +35,10 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginSubmit = () => { 
-    this.disabled = true;
+    // this.disabled = true;
     let params = {
-      user: this.loginForm.get('user').value,
-      password: this.loginForm.get('password').value,
+      login: this.loginForm.get('user'),
+      password: this.loginForm.get('password'),
       loginMode: 'emailAndPassword',
       navigateTo: '/main'
     };
@@ -46,13 +46,19 @@ export class LoginComponent implements OnInit {
     this._auth
     .login(params)
     .then(res => {
-      setTimeout(() => {
-        this.disabled = false;
-      }, 3000)
+      const string = JSON.stringify(res);
+      const json = JSON.parse(string);
+      if (json.cod === 'l-01') {
+        this._snackbar.open(json.message, '', {
+          duration: 2000,
+          panelClass: ['success-snackbar']
+        });
+        this._router.navigate(['/main']);
+      }
     }).catch( rej => {
-      setTimeout(() => {
+      setTimeout(()  => {
         this.disabled = false;
-      }, 3000)
+      }, 3000);
     });
   }
 }

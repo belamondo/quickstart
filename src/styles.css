@@ -4,7 +4,102 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Exo+2');
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
-
 mat-icon {
     vertical-align: middle;
+}
+mat-icon {
+    vertical-align: middle;
+}
+
+snack-bar-container.error-snackbar {
+    background: #d32f2f;
+}
+  
+snack-bar-container.success-snackbar {
+    background: #59a71a;
+}  
+
+mat-form-field {
+    width: 100%;
+    margin-inline-end: 1em;
+}
+mat-radio-button {
+    margin-inline-end: 1em;
+}
+mat-radio-group {
+    width: 100%;
+}
+mat-radio-group mat-label {
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    margin-left: 12px;
+    margin-bottom: 14px;
+    color: #6b6b6b;
+}
+mat-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+table-data {
+    width: 100%;
+}
+a {
+    cursor: pointer;
+}
+video {
+    width: 100%;
+    height: auto;
+}
+img {
+    width: 100%;
+    height: auto;
+}
+.container {
+    width: 98%;
+    margin: 30px 1% 30px 1%;
+}
+.error {
+    color: rgb(187, 16, 16);
+}
+.inside-card {
+    position: relative;
+    background: whitesmoke;
+    width: 80%;
+    margin-bottom: 10px;
+}
+.pointer {
+    cursor: pointer;
+}
+.flex {
+    display: flex;
+}
+.flex section {
+    width: 100%;
+}
+.checkbox mat-label {
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    margin-left: 12px;
+    margin-bottom: 14px;
+    color: #6b6b6b;
+}
+.checkbox mat-checkbox {
+    margin-inline-end: 10px;
+}
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.subtext {
+    font-size: 10px;
+    margin-right: 10px;
+}
+@media screen and (max-width:480px){
+    .flex {
+        display: block;
+    }
 }

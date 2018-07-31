@@ -1,0 +1,56 @@
+<div class="ntm-table-data ">
+  <mat-card>
+    <mat-toolbar color="accent" *ngIf="params.toolbar">
+      <div id="toolbar-title" >{{params.toolbar.title}}</div>
+      <div *ngIf="params.toolbar.actionButton" id="action-button-area">
+        <div *ngIf="params.list.permissions.includes('POST') "
+          class="action-button alternative">
+          <button mat-raised-button (click)="setOutput(params.toolbar.actionButton.value)" color="{{ params.toolbar.actionButton.color }}">{{ params.toolbar.actionButton.value }}</button>
+        </div>
+      </div>
+
+      <div id="toolbar-action" class="custom-input">  
+        <a *ngIf="params.toolbar && params.toolbar.delete && (checkAllController || checkedItem)">
+          <mat-icon (click)="openDialogToDelete(params.toolbar.delete,null)"
+            class="vertical-align-m toolbar-icon">delete</mat-icon>
+        </a>
+
+        <a>
+          <mat-icon class="vertical-align-m toolbar-icon" (click)="searchInputToggle()">search</mat-icon>
+        </a>
+        <mat-form-field  [ngClass]="[searchInput ? 'fade-input' : 'show-input']" color="primary">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar" id="input-search" field="key" #searchKey>
+        </mat-form-field>
+      </div>
+    </mat-toolbar>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoadingList"></mat-progress-bar>
+    <mat-table #table [dataSource]="dataSource"  matSort *ngIf="!isLoadingList"> 
+      <ng-container matColumnDef="id" *ngIf="params.list.edit && params.list.permissions.includes(includeDelate)">
+        <mat-header-cell *matHeaderCellDef class="remove-colunm"> <mat-checkbox (change)="checkAllToggle($event)" [checked]="checkAllItens"></mat-checkbox> </mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element; let i = index" class="remove-colunm"> 
+          <mat-checkbox class="list-item" #myCheckbox [value]="element.id" (change)="checkItem(element.id, $event)"></mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container *ngFor="let column of columns; let i = index;"  [matColumnDef]="column.columnDef">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.header}} <mat-icon class="icon-sort">sort_by_alpha</mat-icon> </mat-header-cell>
+        <mat-cell *matCellDef="let element">          
+          {{ column.cell(element) }}          
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="updated_at" *ngIf="params.list.permissions.includes('PATCH') && !notEdit">
+        <mat-header-cell mat-header-cell *matHeaderCellDef class="edit-colunm">  </mat-header-cell>
+        <mat-cell mat-cell class="edit-colunm last" *matCellDef="let element"> 
+          <a *ngIf="params.list.edit" (click)="onClickEdit(params.list.edit.route, element)" matTooltip="Editar">
+            <mat-icon class="edit">edit</mat-icon>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator class="pages" [length]="5" [pageSize]="limit" [pageSizeOptions]="[5, 10, 25]" *ngIf="!isLoadingList"></mat-paginator>
+  </mat-card>
+</div>

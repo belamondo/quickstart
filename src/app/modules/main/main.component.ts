@@ -10,7 +10,7 @@ import {
 /**
  * Services
  */
-import { AuthenticationService } from './../shared/services/firebase/authentication.service';
+import { AuthenticationService } from './../shared/services/laravel/authentication.service';
 
 @Component({
   selector: 'app-main',
@@ -78,11 +78,12 @@ export class MainComponent implements OnInit {
 
   ngOnInit() { }
 
-  logout = () => {
-    let params = {
-      navigateTo: '/login'
-    };
+  // logout = () => {
+  //   let params;
+  //   params = {
+  //     navigateTo: '/login'
+  //   };
 
-    this._auth.logout(params);
-  }
+  //   this._auth.logout(params);
+  // }
 }

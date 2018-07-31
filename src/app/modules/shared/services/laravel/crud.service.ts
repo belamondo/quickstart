@@ -673,6 +673,7 @@ export class CrudService {
 
     let obj = [];
     let route;
+    console.log(params);
     (params.order) ? route = params.route+'?noPaginate=true&order='+params.order: route = params.route+'?noPaginate=true&order=id,desc';
     this.http.get(environment.urlToApi + route,this.optionsToAuth)
     .subscribe(res => {

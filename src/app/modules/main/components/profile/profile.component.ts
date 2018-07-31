@@ -1,10 +1,10 @@
-import {Component,OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 /**
  * Services
  */
-//import {WindowService} from './../../../shared/services/window.service';
+// import {WindowService} from './../../../shared/services/window.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private _router: Router,
-    //private _windowService: WindowService
+    // private _windowService: WindowService
   ) {}
 
   ngOnInit() {
@@ -30,9 +30,8 @@ export class ProfileComponent implements OnInit {
     //   if(el.route=="/main/profile")
     //     return el.rules
     // })
-    
     // this.userPemissions = arrPermissions[0].rules;
-    // this.userPemissions = ["POST","GET","DELETE","PUT","PATCH"];
+    this.userPemissions = ["POST","GET","DELETE","PUT","PATCH"];
     // this._windowService.width$
     // .subscribe(res => {
     //   if (res < 500) {
@@ -50,11 +49,11 @@ export class ProfileComponent implements OnInit {
     //   }
     // });
 
-    //this.makeList();
+     this.makeList();
   }
 
   eventProfileadd = (event) => {
-    if(event.referenceToAction === "ADICIONAR PERFIL") {
+    if (event.referenceToAction === 'ADICIONAR PERFIL') {
       this._router.navigate(['/main/profile-register']);
     }
   }
@@ -62,32 +61,32 @@ export class ProfileComponent implements OnInit {
   makeList = () => {
     this.paramsToTableData = {
       toolbar: {
-        title: "Perfis",
+        title: 'Perfis',
         delete: [{
           routeAfterDelete: '/main/profile',
-          routeToApi: 'profiles',
+          routeToApi: 'access_profile',
           fieldToDelete: 'id'
         }],
-        actionButton:{
+        actionButton: {
           type: 'raised',
           value: 'ADICIONAR PERFIL',
           color: 'accent'
         },
-        deleteMessage: "ATENÇÃO: Deseja realmente excluir o(s) perfil(s) selecionado(s) ?"
+        deleteMessage: 'ATENÇÃO: Deseja realmente excluir o(s) perfil(s) selecionado(s) ?'
       },
       list: {
-        route: "profiles",
+        route: 'access_profile',
         limit: 5,
         columns: [
-          { columnDef: 'description', header: 'Perfil', cell: (row: Profile) => `${row.description}` }
+          { columnDef: 'name', header: 'Perfil', cell: (row: Profile) => `${row.name}` }
         ],
-        edit: {route: '/main/profile-update/', param: 'id'},
-        permissions:this.userPemissions
+        edit: {route: '/main/access_profile/', param: 'id'},
+        permissions: this.userPemissions
       }
-    }
+    };
   }
 }
 
 export interface Profile {
-  description: string; 
+  name: string;
 }

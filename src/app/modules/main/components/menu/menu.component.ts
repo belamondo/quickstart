@@ -22,33 +22,34 @@ export class MenuComponent implements OnInit {
   public profiles: any;
   public submitButton: string;
   public submitToCreate: boolean;
-  public submitToUpdate: boolean;route
+  public submitToUpdate: boolean;
   public title: string;
   private updatedDescription: string;
   private updatedMenu: string;
   public widthHalf: string;
   public widthThird: string;
   public widthQuarter: string;
-  public status:string = "Ativo";
+  public status = 'Ativo';
   public userPemissions: any;
 
   constructor(
     private _crud: CrudService,
-    //public snackBarService: SnackBarService,
+    // public snackBarService: SnackBarService,
     private _route: ActivatedRoute,
     private _router: Router,
     public _snackbar: MatSnackBar,
-    //private _windowService: WindowService
+    // private _windowService: WindowService
   ) { }
 
   ngOnInit() {
-    let menu = JSON.parse(sessionStorage.getItem('menu'));
-    let arrPermissions =  menu.filter(function(el){
-      if(el.route=="/main/menu")
-        return el.rules
-    })
-    
-    this.userPemissions = arrPermissions[0].rules
+    const menu = JSON.parse(sessionStorage.getItem('menu'));
+    const arrPermissions =  menu.filter(function(el) {
+      if (el.route === '/main/menu') {
+        return el.rules;
+      }
+    });
+
+    this.userPemissions = arrPermissions[0].rules;
 
     // this._windowService.width$
     // .subscribe(res => {
@@ -71,7 +72,7 @@ export class MenuComponent implements OnInit {
       'route': new FormControl(null, [Validators.required, Validators.maxLength(191)]),
       'route_back': new FormControl(null, [Validators.required, Validators.maxLength(191)]),
       'deleted_at': new FormControl(true)
-    })
+    });
 
     this.menuFormInit();
 
@@ -79,50 +80,49 @@ export class MenuComponent implements OnInit {
 
     this._crud
     .read({
-      route: "profiles"
-    }).then(res => { 
-      this.profiles = res['obj']; 
-    })
+      route: 'profiles'
+    }).then(res => {
+      this.profiles = res['obj'];
+    });
   }
 
   active = (event) => {
-    if(event.checked){
-      this.status = "Ativo"
-    }else{
-      this.status = "Inativo"
+    if (event.checked) {
+      this.status = 'Ativo';
+    } else {
+      this.status = 'Inativo';
     }
   }
 
   menuFormInit = () => {
     this._route.params.subscribe(params => {
-      if(params.id) {
+      if (params.id) {
         this.paramToSearch = params.id;
         this.submitToCreate = false;
         this.submitToUpdate = true;
-        this.title = "Atualizar menu";
-        this.submitButton = "Atualizar";
+        this.title = 'Atualizar menu';
+        this.submitButton = 'Atualizar';
 
-        let param = this.paramToSearch.replace(':', '');
-        
+        const param = this.paramToSearch.replace(':', '');
         this._crud
-        .read({route: "menus/" + param}).then(res => {
+        .read({route: 'menus/' + param}).then(res => {
           res['obj'].deleted_at = res['obj'].deleted_at ? false : true;
           this.menuForm.patchValue(res['obj']);
 
-        })
+        });
       } else {
         this.submitToCreate = true;
         this.submitToUpdate = false;
-        this.title = "Cadastrar menu";
-        this.submitButton = "Salvar";
+        this.title = 'Cadastrar menu';
+        this.submitButton = 'Salvar';
       }
-    })
+    });
   }
 
   makeList = () => {
     this.paramsToTableData = {
       toolbar: {
-        title: "Menus",
+        title: 'Menus',
         delete: [{
           routeAfterDelete: '/main/menu',
           routeToApi: 'menus',
@@ -134,14 +134,14 @@ export class MenuComponent implements OnInit {
         }, {
           field: 'route',
           option: 'Rota'
-        },{
+        }, {
           field: 'route_back',
           option: 'Rota Bacl'
         }],
-        deleteMessage: "ATENÇÃO: Deseja realmente desativar o(s) menu(s) selecionado(s) ?"
+        deleteMessage: 'ATENÇÃO: Deseja realmente desativar o(s) menu(s) selecionado(s) ?'
       },
       list: {
-        route: "menus",
+        route: 'menus',
         limit: 5,
         columns: [
           { columnDef: 'description', header: 'Menu', cell: (row: Menu) => `${row.description}` },
@@ -150,7 +150,7 @@ export class MenuComponent implements OnInit {
           { columnDef: 'deleted_at', header: 'Status', cell: (row: Menu) => `${row.deleted_at}`}
         ],
         edit: {route: '/main/menu/', param: 'id'},
-        permissions:this.userPemissions
+        permissions: this.userPemissions
       },
       actionToolbar: {
         language: 'pt-br'
@@ -158,56 +158,57 @@ export class MenuComponent implements OnInit {
     };
   }
 
-  clearForm = (formDirective: FormGroupDirective) =>{
+  clearForm = (formDirective: FormGroupDirective) => {
     formDirective.resetForm();
-    let matHints = document.querySelectorAll('mat-hint');
-    for (var hint = 0; hint < matHints.length; hint++){
+    const matHints = document.querySelectorAll('mat-hint');
+    for ( let hint = 0; hint < matHints.length; hint++) {
       // if(typeof(matHints[hint])=="object")
       matHints[hint].remove();
     }
-    this.status = this.menuForm.controls.deleted_at ? "Inativo" : "Ativo";
+    this.status = this.menuForm.controls.deleted_at ? 'Inativo' : 'Ativo';
   }
 
   onMenuSubmit = (formDirective: FormGroupDirective) => {
     this.menuForm.value.deleted_at = this.menuForm.value.deleted_at ? null : new Date();
-    if(this.submitToUpdate) {
-      let params = {
+    if (this.submitToUpdate) {
+      let params;
+      params = {
         route: 'menus',
         objectToUpdate: this.menuForm.value,
         paramToUpdate: this.paramToSearch.replace(':', '')
       };
-  
       this._crud.update(params)
       .then(res => {
-        let resObj = res['apiBody']
-        let snackClass,string
-        snackClass =  'success-snackbar'
+        const resObj = res['apiBody'];
+        let snackClass, string;
+        snackClass =  'success-snackbar';
 
-        if(resObj && resObj["status"]=="ERROR"){
-          string = "ERRO: "+resObj['message']
-          snackClass =  'error-snackbar'
-        }else{        
-          string = "Atualização feita com sucesso "
-          snackClass =  'success-snackbar'
+        if (resObj && resObj['status'] === 'ERROR') {
+          string = 'ERRO: ' + resObj['message'];
+          snackClass =  'error-snackbar';
+        } else {
+          string = 'Atualização feita com sucesso ';
+          snackClass =  'success-snackbar';
         }
         this._snackbar.open(string, '', {
           duration: 2000,
-          //extraClasses: [snackClass]
+          // extraClasses: [snackClass]
 
-        })
+        });
       }, rej => {
-          // for(let i = 0; i < rej['errors'].length; i++){ 
-          //   this.snackBarService.add(rej['errors'][i]);          
+          // for(let i = 0; i < rej['errors'].length; i++){
+          //   this.snackBarService.add(rej['errors'][i]);
           // }
-      })
+      });
 
       formDirective.resetForm();
 
       this.makeList();
 
       this._router.navigate(['/main/menu']);
-    } else if(this.submitToCreate) {
-      let params = {
+    } else if (this.submitToCreate) {
+      let params;
+      params = {
         route: 'menus',
         objectToCreate: this.menuForm.value
       };
@@ -216,16 +217,16 @@ export class MenuComponent implements OnInit {
       .then(res => {
         this._snackbar.open(res['message'], '', {
           duration: 2000,
-          //extraClasses:['success-snackbar']
-        })
+          // extraClasses:['success-snackbar']
+        });
         formDirective.resetForm();
-        this.status = this.menuForm.controls.deleted_at ? "Inativo" : "Ativo";
+        this.status = this.menuForm.controls.deleted_at ? 'Inativo' : 'Ativo';
         this.makeList();
       }, rej => {
-        // for(let i = 0; i < rej['errors'].length; i++){ 
-        //   this.snackBarService.add(rej['errors'][i]);          
+        // for(let i = 0; i < rej['errors'].length; i++){
+        //   this.snackBarService.add(rej['errors'][i]);
         // }
-      })
+      });
 
     }
   }

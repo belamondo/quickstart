@@ -18,6 +18,7 @@ import { RuleComponent } from './components/rule/rule.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserComponent } from './components/user/user.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
+import { ProfileRegisterComponent } from './components/profile-register/profile-register.component';
 
 @NgModule({
   imports: [
@@ -28,10 +29,11 @@ import { UserRegisterComponent } from './components/user-register/user-register.
   ],
   declarations: [
     DashboardComponent,
-    MainComponent, 
-    PlaygroundComponent, 
+    MainComponent,
+    PlaygroundComponent,
     RuleComponent,
     ProfileComponent,
+    ProfileRegisterComponent,
     UserComponent,
     UserRegisterComponent
   ]
