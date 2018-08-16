@@ -97,8 +97,8 @@ export class NtmTableDataComponent implements OnInit {
     this._crud.newRead({route: this.params.list.route}).then(res => {
       this.arraySource = res['obj']; 
       for(let i = 0, lim = this.arraySource.length; i < lim; i++ ){
-        if(typeof(this.arraySource[i].deleted_at)!="undefined"){
-          this.arraySource[i].deleted_at = this.arraySource[i].deleted_at == null ? "Ativo" : "Inativo"; 
+        if(typeof(this.arraySource[i].is_active)!="undefined"){
+          this.arraySource[i].is_active = this.arraySource[i].is_active ? "Ativo" : "Inativo"; 
         }
 
         if(typeof(this.arraySource[i].city)!="undefined" && this.arraySource[i].city != null){

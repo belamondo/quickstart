@@ -101,7 +101,7 @@ export class AuthenticationService {
       this.url,
       {
         'client_id': 2,
-        'client_secret': 'EeDEPyKjEIdAxjsB0tfLXUZ0bxtBTLzNCvvdUR6j',
+        'client_secret': 'AM5CGsxblCxgIqDUnewivCYybXQDVe4x0OC2lbgN',
         'grant_type': 'password',
         'username': params.login.value,
         'password': params.password.value

@@ -12,6 +12,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { UserComponent } from './components/user/user.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { ProfileRegisterComponent } from './components/profile-register/profile-register.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 const routes: Routes = [{
   path: '', component: MainComponent, children: [{
@@ -21,6 +22,12 @@ const routes: Routes = [{
   }, {
     path: 'dashboard',
     component: DashboardComponent
+  }, {
+    path: 'menu',
+    component: MenuComponent
+  }, {
+    path: 'menu/:id',
+    component: MenuComponent
   }, {
     path: 'rule',
     component: RuleComponent
@@ -34,7 +41,7 @@ const routes: Routes = [{
     path: 'profile-register',
     component: ProfileRegisterComponent
   }, {
-    path: 'access_profile/:id',
+    path: 'profile-update/:id',
     component: ProfileRegisterComponent
   }, {
     path: 'user',
@@ -43,7 +50,7 @@ const routes: Routes = [{
     path: 'user-register',
     component: UserRegisterComponent
   }, {
-    path: 'user-register/:id',
+    path: 'user-update/:id',
     component: UserRegisterComponent
   }]
 }];

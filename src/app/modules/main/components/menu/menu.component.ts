@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,8 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
  * Services
  */
 import { CrudService } from './../../../shared/services/laravel/crud.service';
-// import { WindowService } from './../../../shared/services/window.service';
-// import { SnackBarService } from '../../../shared/services/snackbar.service';
+import { SnackBarService } from '../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-menu',
@@ -31,59 +30,41 @@ export class MenuComponent implements OnInit {
   public widthQuarter: string;
   public status = 'Ativo';
   public userPemissions: any;
+  public ruleArray: any;
+  public rulesToAdd: any = [];
+
+  @ViewChildren('myCheckbox') private myCheckboxes: QueryList<any>;
+  @ViewChildren('checkMaster') private checkMaster: QueryList<any>;
 
   constructor(
     private _crud: CrudService,
-    // public snackBarService: SnackBarService,
+    public snackBarService: SnackBarService,
     private _route: ActivatedRoute,
     private _router: Router,
     public _snackbar: MatSnackBar,
-    // private _windowService: WindowService
   ) { }
 
   ngOnInit() {
-    const menu = JSON.parse(sessionStorage.getItem('menu'));
-    const arrPermissions =  menu.filter(function(el) {
-      if (el.route === '/main/menu') {
-        return el.rules;
-      }
-    });
-
-    this.userPemissions = arrPermissions[0].rules;
-
-    // this._windowService.width$
-    // .subscribe(res => {
-    //   if (res < 500) {
-    //     this.widthQuarter = "form-pattern";
-    //     this.widthThird = "form-pattern";
-    //     this.widthHalf = "form-pattern";
-    //   } else if (res < 800) {
-    //     this.widthQuarter = "form-pattern-half"
-    //     this.widthThird = "form-pattern";
-    //     this.widthHalf = "form-pattern";
-    //   } else {
-    //     this.widthQuarter = "form-pattern-quarter"
-    //     this.widthThird = "form-pattern-third";
-    //     this.widthHalf = "form-pattern-half";
+    // const menu = JSON.parse(sessionStorage.getItem('menu'));
+    // const arrPermissions =  menu.filter(function(el) {
+    //   if (el.route === '/main/menu') {
+    //     return el.rules;
     //   }
-    // })
+    // });
+
+    // this.userPemissions = arrPermissions[0].rules;
+    this.userPemissions = ['POST', 'GET', 'DELETE', 'PUT', 'PATCH'];
+
     this.menuForm = new FormGroup({
       'description': new FormControl(null, [Validators.required, Validators.maxLength(191)]),
       'route': new FormControl(null, [Validators.required, Validators.maxLength(191)]),
       'route_back': new FormControl(null, [Validators.required, Validators.maxLength(191)]),
-      'deleted_at': new FormControl(true)
+      'is_active': new FormControl(true),
+      'deleted_at': new FormControl(null)
     });
 
     this.menuFormInit();
-
     this.makeList();
-
-    this._crud
-    .read({
-      route: 'profiles'
-    }).then(res => {
-      this.profiles = res['obj'];
-    });
   }
 
   active = (event) => {
@@ -105,8 +86,9 @@ export class MenuComponent implements OnInit {
 
         const param = this.paramToSearch.replace(':', '');
         this._crud
-        .read({route: 'menus/' + param}).then(res => {
-          res['obj'].deleted_at = res['obj'].deleted_at ? false : true;
+        .newRead({route: 'menu/' + param}).then(res => {
+          res['obj'].is_active = res['obj'].is_active ? true : false;
+          this.status = res['obj'].is_active ? 'Ativo' : 'Inativo';
           this.menuForm.patchValue(res['obj']);
 
         });
@@ -125,7 +107,7 @@ export class MenuComponent implements OnInit {
         title: 'Menus',
         delete: [{
           routeAfterDelete: '/main/menu',
-          routeToApi: 'menus',
+          routeToApi: 'menu',
           fieldToDelete: 'id'
         }],
         search: [{
@@ -136,18 +118,18 @@ export class MenuComponent implements OnInit {
           option: 'Rota'
         }, {
           field: 'route_back',
-          option: 'Rota Bacl'
+          option: 'Rota Back'
         }],
         deleteMessage: 'ATENÇÃO: Deseja realmente desativar o(s) menu(s) selecionado(s) ?'
       },
       list: {
-        route: 'menus',
+        route: 'menu',
         limit: 5,
         columns: [
           { columnDef: 'description', header: 'Menu', cell: (row: Menu) => `${row.description}` },
           { columnDef: 'route', header: 'Rota', cell: (row: Menu) => `${row.route}` },
           { columnDef: 'route_back', header: 'Rota Back', cell: (row: Menu) => `${row.route_back}` },
-          { columnDef: 'deleted_at', header: 'Status', cell: (row: Menu) => `${row.deleted_at}`}
+          { columnDef: 'deleted_at', header: 'Status', cell: (row: Menu) => `${row.is_active}`}
         ],
         edit: {route: '/main/menu/', param: 'id'},
         permissions: this.userPemissions
@@ -162,21 +144,23 @@ export class MenuComponent implements OnInit {
     formDirective.resetForm();
     const matHints = document.querySelectorAll('mat-hint');
     for ( let hint = 0; hint < matHints.length; hint++) {
-      // if(typeof(matHints[hint])=="object")
       matHints[hint].remove();
     }
-    this.status = this.menuForm.controls.deleted_at ? 'Inativo' : 'Ativo';
+    this.menuForm.get('is_active').setValue(true);
+    // this.status = this.menuForm.controls.is_active ? 'Ativo' : 'Ativo';
   }
 
   onMenuSubmit = (formDirective: FormGroupDirective) => {
-    this.menuForm.value.deleted_at = this.menuForm.value.deleted_at ? null : new Date();
+    this.menuForm.value.is_active ? this.menuForm.value.deleted_at = null : this.menuForm.value.deleted_at = new Date();
     if (this.submitToUpdate) {
       let params;
       params = {
-        route: 'menus',
+        route: 'menu',
         objectToUpdate: this.menuForm.value,
         paramToUpdate: this.paramToSearch.replace(':', '')
       };
+
+      params.objectToUpdate.id = this.paramToSearch.replace(':', '');
       this._crud.update(params)
       .then(res => {
         const resObj = res['apiBody'];
@@ -196,45 +180,46 @@ export class MenuComponent implements OnInit {
 
         });
       }, rej => {
-          // for(let i = 0; i < rej['errors'].length; i++){
-          //   this.snackBarService.add(rej['errors'][i]);
-          // }
+          for (let i = 0; i < rej['errors'].length; i++) {
+            this.snackBarService.add(rej['errors'][i]);
+          }
       });
-
-      formDirective.resetForm();
-
+      // this.status = this.menuForm.controls.is_active ? 'Inativo' : 'Ativo';
+      // formDirective.resetForm();
       this.makeList();
-
       this._router.navigate(['/main/menu']);
+
     } else if (this.submitToCreate) {
       let params;
       params = {
-        route: 'menus',
+        route: 'menu',
         objectToCreate: this.menuForm.value
       };
-
       this._crud.create(params)
       .then(res => {
         this._snackbar.open(res['message'], '', {
           duration: 2000,
-          // extraClasses:['success-snackbar']
+          panelClass: ['success-snackbar']
         });
         formDirective.resetForm();
-        this.status = this.menuForm.controls.deleted_at ? 'Inativo' : 'Ativo';
+        this.menuForm.get('is_active').setValue(true);
+        // this.status = this.menuForm.controls.is_active ? 'Inativo' : 'Ativo';
         this.makeList();
       }, rej => {
-        // for(let i = 0; i < rej['errors'].length; i++){
-        //   this.snackBarService.add(rej['errors'][i]);
-        // }
+        for (let i = 0; i < rej['errors'].length; i++) {
+          this.snackBarService.add(rej['errors'][i]);
+        }
       });
 
     }
   }
+
 }
 
 export interface Menu {
   description: string;
   route: string;
   deleted_at: string;
+  is_active: string;
   route_back: String;
 }

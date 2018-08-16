@@ -34,9 +34,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onLoginSubmit = () => { 
+  onLoginSubmit = () => {
     // this.disabled = true;
-    let params = {
+    let params;
+    params = {
       login: this.loginForm.get('user'),
       password: this.loginForm.get('password'),
       loginMode: 'emailAndPassword',
@@ -54,6 +55,13 @@ export class LoginComponent implements OnInit {
           panelClass: ['success-snackbar']
         });
         this._router.navigate(['/main']);
+      }
+
+      if (json.cod === 'le-01') {
+        this._snackbar.open(json.message, '', {
+          duration: 2000,
+          panelClass: ['error-snackbar']
+        });
       }
     }).catch( rej => {
       setTimeout(()  => {

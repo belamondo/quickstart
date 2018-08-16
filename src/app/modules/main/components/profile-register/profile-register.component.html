@@ -16,7 +16,7 @@
     
           <div>
             <div class="form-pattern-slide-area">    
-              <mat-slide-toggle formControlName="deleted_at" (change)="active($event)" color="primary">{{status}}</mat-slide-toggle>
+              <mat-slide-toggle formControlName="is_active" (change)="active($event)" color="primary">{{status}}</mat-slide-toggle>
             </div>
           </div> 
         </div>    
@@ -29,14 +29,18 @@
           <div>
             <table>
               <th>Menu</th>
-              <th *ngFor="let rule of rules" [ngStyle]="{'text-align': 'center'}">
-                <mat-checkbox (change)="checkallMenu(rule.id,$event)" >{{rule.description}}</mat-checkbox>
+              <th *ngFor="let rule2 of rules" [ngStyle]="{'text-align': 'center'}">
+                <mat-checkbox (change)="checkallMenu(rule2.id,$event)" >{{rule2.name}}</mat-checkbox>
               </th>
               <tbody id="permission">
                 <tr *ngFor="let menu of menus; let i = index">
+                  <!-- <td id="menu"><mat-checkbox (change)="checkallRule(menu.id,$event)">{{menu.description}}</mat-checkbox></td> -->
                   <td id="menu"><mat-checkbox (change)="checkallRule(menu.id,$event)">{{menu.description}}</mat-checkbox></td>
-                  <td *ngFor="let rule of menu.rules; let j = index" [ngStyle]="{'text-align': 'center'}">
-                    <mat-checkbox #myCheckbox value="{{rule.id}}" name="{{menu.id}}" [checked]="rule._checked"></mat-checkbox>                  
+                  <td *ngFor="let rule of menu.rules;" [ngStyle]="{'text-align': 'center'}">
+                    <!-- <mat-checkbox #myCheckbox value="{{rule.id}}" name="{{menu.id}}" [checked]="rule._checked"  -->
+                    <mat-checkbox #myCheckbox value="{{ruleMenu(menu.id, rule.id)[0]?.id}}" attr.data-ruleID="{{rule.id}}" 
+                    name="{{menu.id}}" [checked]="rule._checked" 
+                    ></mat-checkbox>                  
                   </td>
                 </tr> 
               </tbody> 
@@ -46,7 +50,7 @@
 
         <div class="buttons-pattern">
           <button mat-raised-button type="submit" color="primary" [disabled]="!profileForm.valid">{{submitButton}}</button>  
-          <a mat-raised-button (click)="clearForm()" [disabled]="!profileForm.get('description')">Limpar</a>
+          <a mat-raised-button (click)="clearForm(formDirective)" [disabled]="!profileForm.get('description')">Limpar</a>
           <a mat-raised-button routerLink="/main/profile">Voltar</a>
         </div>
         

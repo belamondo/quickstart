@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
  */
 import { MainRoutingModule } from './main-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { TextMaskModule } from 'angular2-text-mask'
+import { TextMaskModule } from 'angular2-text-mask';
 
 /**
  * Components
@@ -19,6 +19,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { UserComponent } from './components/user/user.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { ProfileRegisterComponent } from './components/profile-register/profile-register.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { ProfileRegisterComponent } from './components/profile-register/profile-
     ProfileComponent,
     ProfileRegisterComponent,
     UserComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    MenuComponent
   ]
 })
 export class MainModule { }

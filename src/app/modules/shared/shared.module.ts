@@ -50,6 +50,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { LogoutComponent } from './components/logout/logout.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { NtmTableDataComponent } from './components/ntm-table-data/ntm-table-data.component';
+import { SnackBarService } from './services/snackbar.service';
 
 @NgModule({
   imports: [
@@ -122,7 +123,8 @@ import { NtmTableDataComponent } from './components/ntm-table-data/ntm-table-dat
   ], providers: [
     AuthenticationService,
     AuthGuard,
-    CrudService
+    CrudService,
+    SnackBarService
   ], entryComponents: [
     DeleteConfirmComponent,
     ForgotPasswordComponent

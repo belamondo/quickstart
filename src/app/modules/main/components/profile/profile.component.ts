@@ -31,7 +31,7 @@ export class ProfileComponent implements OnInit {
     //     return el.rules
     // })
     // this.userPemissions = arrPermissions[0].rules;
-    this.userPemissions = ["POST","GET","DELETE","PUT","PATCH"];
+    this.userPemissions = ['POST', 'GET', 'DELETE', 'PUT', 'PATCH'];
     // this._windowService.width$
     // .subscribe(res => {
     //   if (res < 500) {
@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
         title: 'Perfis',
         delete: [{
           routeAfterDelete: '/main/profile',
-          routeToApi: 'access_profile',
+          routeToApi: 'profile',
           fieldToDelete: 'id'
         }],
         actionButton: {
@@ -75,12 +75,12 @@ export class ProfileComponent implements OnInit {
         deleteMessage: 'ATENÇÃO: Deseja realmente excluir o(s) perfil(s) selecionado(s) ?'
       },
       list: {
-        route: 'access_profile',
+        route: 'profile',
         limit: 5,
         columns: [
-          { columnDef: 'name', header: 'Perfil', cell: (row: Profile) => `${row.name}` }
+          { columnDef: 'description', header: 'Perfil', cell: (row: Profile) => `${row.description}` }
         ],
-        edit: {route: '/main/access_profile/', param: 'id'},
+        edit: {route: '/main/profile-update/', param: 'id'},
         permissions: this.userPemissions
       }
     };
@@ -88,5 +88,5 @@ export class ProfileComponent implements OnInit {
 }
 
 export interface Profile {
-  name: string;
+  description: string;
 }

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 /*Services*/
-import { CrudService } from './../../services/firebase/crud.service';
+import { CrudService } from './../../services/laravel/crud.service';
 
 @Component({
   selector: 'ntm-delete-confirm',
@@ -29,24 +29,22 @@ export class DeleteConfirmComponent implements OnInit {
 
   ngOnInit() {
     if(!this.data.dialogMessage) {
-      this.dialogMessage = "Tem certeza que deseja apagar?"
+      this.dialogMessage = 'Tem certeza que deseja apagar?';
     } else {
       this.dialogMessage = this.data.dialogMessage;
     }
   }
-   
   delete() {
-    // this.crud.delete({route: this.data.routeToApi,paramToDelete: this.data.paramToDelete})
-    // .then(() => {
-    //   this.router.navigate([this.data.routeAfterDelete]);
+    this.crud.delete({route: this.data.routeToApi,paramToDelete: this.data.paramToDelete})
+    .then(() => {
+      this.router.navigate([this.data.routeAfterDelete]);
 
-    //   let string = this.data.paramToDelete.length + " item(ns) apagado(s)";
+      let string = this.data.paramToDelete.length + " item(ns) apagado(s)";
 
-    //   this.matsnackbar.open(string, '', {
-    //     duration: 3000
-    //   });
-    // });
-    
+      this.matsnackbar.open(string, '', {
+        duration: 3000
+      });
+    });
     this.dialogRef.close(true);
   }
 }

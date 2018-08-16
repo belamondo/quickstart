@@ -4,8 +4,8 @@ import { CrudService } from '../../../shared/services/laravel/crud.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { forEach } from '@angular/router/src/utils/collection';
-// import { ValidateRequired } from '../../../shared/validators/required.validator';
-// import { SnackBarService } from '../../../shared/services/snackbar.service';
+import { ValidateRequired } from '../../../shared/validators/required.validator';
+import { SnackBarService } from '../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-profile-register',
@@ -25,6 +25,7 @@ export class ProfileRegisterComponent implements OnInit {
   public submitToUpdate: boolean;
   public menus: any;
   public rules: any;
+  public menuRules: any;
   public categories: any;
   public permissions: Array<any> = [];
   public permissionEdit: Array<any> = [];
@@ -39,7 +40,7 @@ export class ProfileRegisterComponent implements OnInit {
   constructor(
     private _crud: CrudService,
     private _route: ActivatedRoute,
-    // public snackBarService: SnackBarService,
+    public snackBarService: SnackBarService,
     private _router: Router,
     public _snackbar: MatSnackBar,
   ) { }
@@ -48,17 +49,11 @@ export class ProfileRegisterComponent implements OnInit {
 
 
     this.profileForm = new FormGroup({
-      // 'description': new FormControl(null, ValidateRequired),
-      'description': new FormControl(null, ),
-      'deleted_at': new FormControl(true)
+      'description': new FormControl(null, ValidateRequired ),
+      'is_active': new FormControl(true)
     });
 
-    // this.categoriasForm = new FormGroup({
-    //   'categorias': new FormControl(null, Validators.required)
-    // })
-
     this.profileFormInit();
-
     this.listMenuNotTrashed();
 
   }
@@ -71,7 +66,16 @@ export class ProfileRegisterComponent implements OnInit {
     }
   }
 
+  ruleMenu(verify_menu, verify_rule) {
+    return this.menuRules.filter(r => r.rule_id.toString() === verify_rule.toString() && r.menu_id.toString() === verify_menu.toString());
+  }
+
+
   profileFormInit = () => {
+    this._crud
+    .newRead({route: 'menu/rules'}).then(res => {
+      this.menuRules = res['obj'];
+    });
     this._route.params.subscribe(params => {
       if (params.id) {
         this.paramToSearch = params.id;
@@ -84,9 +88,11 @@ export class ProfileRegisterComponent implements OnInit {
         param  = this.paramToSearch.replace(':', '');
 
         this._crud
-        .read({route: 'profiles/permissions/' + param}).then(res => {
-          res['obj'].deleted_at = res['obj'].deleted_at ? false : true;
-          this.permissionEdit = res['obj'].permissions;
+        .newRead({route: 'profile/' + param}).then(res => {
+          // console.log(res);
+          res['obj'].is_active = res['obj'].is_active ? true : false;
+          this.status = res['obj'].is_active ? 'Ativo' : 'Inativo';
+          this.permissionEdit = res['obj'].menu_rules;
           this.profileForm.patchValue(res['obj']);
         });
 
@@ -105,52 +111,50 @@ export class ProfileRegisterComponent implements OnInit {
     const myCheckboxes = this.myCheckboxes.toArray();
     for (let i = 0; i < myCheckboxes.length; i++) {
       if (myCheckboxes[i].checked) {
-        let obj;
-        obj = {'menus_id': myCheckboxes[i].name, 'rules_id': myCheckboxes[i].value};
-        this.permissions.push(obj);
+        this.permissions.push(myCheckboxes[i].value);
       }
     }
-
-    this.profileForm.value.deleted_at = this.profileForm.value.deleted_at ? null : new Date();
+    this.profileForm.value.is_active ? this.profileForm.value.deleted_at = null : this.profileForm.value.deleted_at = new Date();
     if (this.submitToUpdate) {
       let objFinal;
       objFinal = {
+        'id': this.paramToSearch.replace(':', ''),
         'description': this.profileForm.value.description,
-        'deleted_at': this.profileForm.value.deleted_at,
-        'permissions': this.permissions
-        // "categorias":this.categoriasId
+        'is_active': this.profileForm.value.is_active,
+        'menu_rules': this.permissions
       };
 
       let params;
       params = {
-        route: 'profiles',
+        route: 'profile',
         objectToUpdate: objFinal,
         paramToUpdate: this.paramToSearch.replace(':', '')
       };
-
       this._crud.update(params)
       .then(res => {
         const resObj = res['apiBody'];
         let snackClass, string;
+        string = 'atualizado com sucesso';
         snackClass =  'success-snackbar';
 
-        if (resObj && resObj['status'] === 'ERROR') {
-          string = 'ERRO: ' + resObj['message'];
-          snackClass =  'error-snackbar';
-        } else {
-          string = 'Atualização feita com sucesso ';
-          snackClass =  'success-snackbar';
-        }
+        // if (resObj && resObj['status'] === 'ERROR') {
+        //   string = 'ERRO: ' + resObj['message'];
+        //   snackClass =  'error-snackbar';
+        // } else {
+        //   string = 'Atualização feita com sucesso ';
+        //   snackClass =  'success-snackbar';
+        // }
         this._snackbar.open(string, '', {
           duration: 2000,
-          // extraClasses: [snackClass]
+          panelClass: [snackClass]
 
         });
-        formDirective.reset();
-        this._router.navigate(['/main/profile']);
+        // formDirective.reset();
+        // this.status = this.profileForm.controls.is_active ? 'Ativo' : 'Inativo';
+        // this._router.navigate(['/main/profile']);
       }, rej => {
         for (let i = 0; i < rej['errors'].length; i++) {
-          // this.snackBarService.add(rej['errors'][i]);
+          this.snackBarService.add(rej['errors'][i]);
         }
       });
 
@@ -158,39 +162,40 @@ export class ProfileRegisterComponent implements OnInit {
       let objFinal;
       objFinal = {
         'description': this.profileForm.value.description,
-        'deleted_at': this.profileForm.value.deleted_at,
-        'permissoes': this.permissions
-        // "categorias":this.categoriasId
+        // 'deleted_at': this.profileForm.value.deleted_at,
+        'menu_rules': this.permissions
       };
 
       let params;
       params = {
-        route: 'profiles',
+        route: 'profile',
         objectToCreate: objFinal
       };
-
       this._crud.create(params)
       .then(res => {
         this._snackbar.open(res['message'], '', {
           duration: 2000,
-          // extraClasses:['success-snackbar']
+          panelClass: ['success-snackbar']
         });
-        formDirective.reset();
+        // formDirective.reset();
+        this.clearForm(formDirective);
+        this._router.navigate(['/main/profile']);
       }, rej => {
         for (let i = 0; i < rej['errors'].length; i++) {
-          // this.snackBarService.add(rej['errors'][i]);
+          this.snackBarService.add(rej['errors'][i]);
         }
       });
     }
   }
 
+
   listMenuNotTrashed = () => {
     let rules = [];
     let menuRules;
-    this._crud.read({route: 'profiles/rules/not-trashed'}).then(res => {
+      this._crud.read({route: 'rules'}).then(res => {
       this.rules = res['obj'];
       rules = res['obj'];
-      this._crud.read({route: 'profiles/menus/not-trashed'}).then(res2 => {
+      this._crud.read({route: 'menu'}).then(res2 => {
         this.menus = res2['obj'];
         for (let i = 0; i < this.menus.length; i++) {
           menuRules = JSON.stringify(rules);
@@ -210,32 +215,38 @@ export class ProfileRegisterComponent implements OnInit {
   }
 
 
-  clearForm = () => {
-    this.profileForm.controls.description.reset();
-    this.categoriasId = [];
-    this.fieldArray = [];
+  clearForm = (formDirective: FormGroupDirective) => {
     let myCheckboxes;
     myCheckboxes = this.myCheckboxes.toArray();
     for (let i = 0; i < myCheckboxes.length; i++) {
       myCheckboxes[i].checked = false;
     }
+
+    formDirective.resetForm();
+    const matHints = document.querySelectorAll('mat-hint');
+    for (let hint = 0; hint < matHints.length; hint++) {
+      matHints[hint].remove();
+    }
+    this.profileForm.get('is_active').setValue(true);
+    this.status =  'Ativo';
   }
 
   checkallRule = (id, event) => {
     let  myCheckboxes;
     myCheckboxes = this.myCheckboxes.toArray();
     for (let i = 0; i < myCheckboxes.length; i++) {
-      if (myCheckboxes[i].name === id) {
+      if (myCheckboxes[i].name === id.toString()) {
         myCheckboxes[i].checked = event.checked;
       }
     }
   }
 
   checkallMenu = (id, event) => {
-    let myCheckboxes;
+    let myCheckboxes, ruleId;
     myCheckboxes = this.myCheckboxes.toArray();
     for (let i = 0; i < myCheckboxes.length; i++) {
-      if (myCheckboxes[i].value === id) {
+      ruleId = myCheckboxes[i]._elementRef.nativeElement.dataset.ruleid;
+      if (ruleId === id.toString()) {
         myCheckboxes[i].checked = event.checked;
       }
     }

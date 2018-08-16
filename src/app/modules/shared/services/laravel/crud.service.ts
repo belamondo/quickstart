@@ -588,7 +588,7 @@ export class CrudService {
     })
 
     this.http
-    .patch(
+    .put(
       this.url + route + '/' + paramToUpdate,
       objectToUpdate,
       this.optionsToAuth
@@ -673,20 +673,20 @@ export class CrudService {
 
     let obj = [];
     let route;
-    console.log(params);
-    (params.order) ? route = params.route+'?noPaginate=true&order='+params.order: route = params.route+'?noPaginate=true&order=id,desc';
-    this.http.get(environment.urlToApi + route,this.optionsToAuth)
+    // (params.order) ? route = params.route+'?noPaginate=true&order='+params.order: route = params.route+'?noPaginate=true&order=id,desc';
+    (params.order) ? route = params.route + '?noPaginate=true&order=' + params.order : route = params.route;
+    this.http.get(environment.urlToApi + route, this.optionsToAuth)
     .subscribe(res => {
-      if(res['_body'])
+      if (res['_body']) {
         obj = JSON.parse(res['_body']);
-
+      }
       resolve({
         obj
       });
     }, rej => {
-      if(rej['_body'])
+      if (rej['_body']) {
         obj = JSON.parse(rej['_body']);
-
+      }
       reject({
         apiBody: obj,
         status: 500

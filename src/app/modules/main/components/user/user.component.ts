@@ -1,7 +1,7 @@
-import { Component,OnInit} from '@angular/core';
-import {FormControl,FormGroup,Validators,FormBuilder} from '@angular/forms';
-import {MatDialogRef,MAT_DIALOG_DATA,MatSnackBar} from '@angular/material';
-import {ActivatedRoute,Router} from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
 
 /**
  * Services
@@ -15,7 +15,7 @@ import {CrudService} from './../../../shared/services/laravel/crud.service';
 })
 export class UserComponent implements OnInit {
   public userForm: FormGroup;
-  title: string = "Usuários";
+  title: 'Usuários';
   passwordErrors: any;
 
   public paramToSearch: any;
@@ -23,7 +23,7 @@ export class UserComponent implements OnInit {
   public submitToUpdate: boolean;
   public submitButton: string;
   public paramsToTableData: any;
-  public userPemissions:any;
+  public userPemissions: any;
 
   constructor(
     private _personFormBuilder: FormBuilder,
@@ -35,45 +35,45 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
 
-    let menu = JSON.parse(sessionStorage.getItem('menu'));
-    let arrPermissions =  menu.filter(function(el){
-      if(el.description=="Usuários")
-        return el.rules
-    })
-    
-    this.userPemissions = arrPermissions[0].rules
+    // let menu = JSON.parse(sessionStorage.getItem('menu'));
+    // let arrPermissions =  menu.filter(function(el){
+    //   if(el.description=="Usuários")
+    //     return el.rules
+    // })
+    // this.userPemissions = arrPermissions[0].rules
+    this.userPemissions = ['POST', 'GET', 'DELETE', 'PUT', 'PATCH'];
 
-    this.crud.read({
-      route: "users"
-    })
-    .then(res => {
-      //console.log(res);
-    });
+    // this.crud.read({
+    //   route: 'user'
+    // })
+    // .then(res => {
+    //   //console.log(res);
+    // });
     this.makeList();
   }
-  
+
   makeList = () => {
     this.paramsToTableData = {
       toolbar: {
-        title: "Usuários",
+        title: 'Usuários',
         delete: [{
           routeAfterDelete: '/main/user',
           routeToApi: 'users',
           fieldToDelete: 'id'
         }],
-        actionButton:{
+        actionButton: {
           type: 'raised',
           value: 'ADICIONAR USUÁRIO',
           color: 'accent'
         },
-        deleteMessage: "ATENÇÃO: Deseja realmente desativar o(s) usuário(s) selecionado(s) ?"
+        deleteMessage: 'ATENÇÃO: Deseja realmente desativar o(s) usuário(s) selecionado(s) ?'
       },
       list: {
-        route: "users",
+        route: 'users',
         limit: 10,
         columns: [
           { columnDef: 'name', header: 'Nome', cell: (row: User) => `${row.name}` },
-          { columnDef: 'uf', header: 'UF', cell: (row: User) => `${row.uf == null ? "" : row.uf}`},
+          { columnDef: 'uf', header: 'UF', cell: (row: User) => `${row.uf == null ? '' : row.uf}`},
           { columnDef: 'email', header: 'Descrição', cell: (row: User) => `${row.email}` },
           { columnDef: 'profiles', header: 'Perfis de acesso', cell: (row: User) => `${row.profiles}` },
           { columnDef: 'deleted_at', header: 'Status', cell: (row: User) => `${row.deleted_at}`}
@@ -88,7 +88,7 @@ export class UserComponent implements OnInit {
   }
 
   eventUserParticipation = (event) => {
-    if(event.referenceToAction === "ADICIONAR USUÁRIO") {
+    if (event.referenceToAction === 'ADICIONAR USUÁRIO') {
       this.router.navigate(['/main/user-register']);
     }
   }
@@ -99,5 +99,5 @@ export interface User {
   uf: any;
   email: string;
   deleted_at: string;
-  profiles:any;
+  profiles: any;
 }
