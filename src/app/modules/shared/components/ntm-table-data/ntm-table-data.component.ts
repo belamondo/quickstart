@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, Input, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
-import { MatSort, MatPaginator, MatTableDataSource, MatPaginatorIntl, MatDialog, MatColumnDef, MatInput, MatSnackBar } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, MatPaginatorIntl, MatDialog,
+  MatColumnDef, MatInput, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { DeleteConfirmComponent } from '../delete-confirm/delete-confirm.component';
 import { CrudService } from '../../services/laravel/crud.service';
@@ -14,30 +15,30 @@ export class NtmTableDataComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('searchKey', { read: MatInput }) searchKeyFocus: MatInput;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChildren('myCheckbox') private myCheckboxes : QueryList<any>;
+  @ViewChildren('myCheckbox') private myCheckboxes: QueryList<any>;
   @Input() params;
   @Input('matColumnDef') public matColumnDef: MatColumnDef;
   @Output() actionToOutput = new EventEmitter();
-  public progress = "";
+  public progress = '';
   color = 'primary';
   mode = 'indeterminate';
   diameter = 5;
   displayedColumns = [];
   dataSource = new MatTableDataSource([]);
-  searchInput: boolean = false;
-  limit: number = 5;
-  prepositionLabel: string = 'de';
-  checkedItem: boolean = false;
+  searchInput = false;
+  limit = 5;
+  prepositionLabel = 'de';
+  checkedItem = false;
   arraySource: any = [];
-  itensToDeleteIds:any = [];
-  itensToCredential:any = [];
-  checkAllController: boolean = false;
+  itensToDeleteIds: any = [];
+  itensToCredential: any = [];
+  checkAllController = false;
   public checkAllItens;
-  public iconDelete = "lock";
+  public iconDelete = 'lock';
   public justify = false;
-  public includeDelate = "DELETE";
-  public notEdit:boolean = false;
-  public isLoadingList: boolean = true;
+  public includeDelate = 'DELETE';
+  public notEdit = false;
+  public isLoadingList = true;
 
   constructor(
     private _crud: CrudService,
@@ -46,20 +47,20 @@ export class NtmTableDataComponent implements OnInit {
     public _snackbar: MatSnackBar,
     private router: Router
   ) {
-    this._paginator.nextPageLabel = "Próximo";  
-    this._paginator.previousPageLabel = "Anterior";  
-    this._paginator.itemsPerPageLabel = "Itens por página";    
+    this._paginator.nextPageLabel = 'Próximo';
+    this._paginator.previousPageLabel = 'Anterior';
+    this._paginator.itemsPerPageLabel = 'Itens por página';
     this._paginator.getRangeLabel = (page: number, pageSize: number, length: number) => {
-      if (length == 0 || pageSize == 0) { return `0 ${this.prepositionLabel} ${length}`; }  
-      length = Math.max(length, 0);  
-      const startIndex = page * pageSize;  
+      if (length === 0 || pageSize === 0) { return `0 ${this.prepositionLabel} ${length}`; }
+      length = Math.max(length, 0);
+      const startIndex = page * pageSize;
       // If the start index exceeds the list length, do not try and fix the end index to the end.
       const endIndex = startIndex < length ?
           Math.min(startIndex + pageSize, length) :
           startIndex + pageSize;
-  
+
       return `${startIndex + 1} - ${endIndex} ${this.prepositionLabel} ${length}`;
-    }
+    };
    }
 
   columns = [];

@@ -3,14 +3,13 @@
       <div>{{title}}</div>
     </div>
     <mat-card>
-      <form [formGroup]="userRegisterForm" #formDirective="ngForm" (ngSubmit)="onUserSubmit(formDirective)">
+      <form [formGroup]="userRegisterForm" #formDirective="ngForm" (ngSubmit)="onUserSubmit(formDirective)" *ngIf="!loading">
         <div class="flex">          
           <mat-form-field >
             <mat-icon class="icon-pattern" matPrefix>person</mat-icon>
             <input matInput formControlName="name" type="text" placeholder="Nome completo">
           </mat-form-field>
         </div>
-
       
         <div  class="flex">          
           <mat-form-field >
@@ -18,52 +17,19 @@
             <input matInput formControlName="email" type="text" placeholder="E-mail">
           </mat-form-field>
         </div>
-        
-        
-      
-        <!-- <div class="flex">
-          
-          <mat-form-field>
-            <mat-icon class="icon-pattern" matPrefix>phone</mat-icon>
-            <input matInput formControlName="telephone_number" type="text" placeholder="Telefone fixo" 
-            [textMask]="{mask: mask.phone}">
-            <mat-hint *ngIf="phoneErrors">{{phoneErrors}}</mat-hint>
-          </mat-form-field>
 
-          <mat-form-field>
-            <mat-icon class="icon-pattern" matPrefix>smartphone</mat-icon>
-            <input matInput formControlName="mobilephone_number" type="text" placeholder="Telefone celular" 
-            [textMask]="{mask: mask.cell_phone}">
-          </mat-form-field>
-        </div> -->
-      
-        <!-- <div [ngClass]="widthHalf">
-          
-         
-        </div> -->
-      
-        <!-- <div [ngClass]="widthHalf">
-          
-          <mat-form-field class="half-input">
-            <mat-icon class="icon-pattern" matPrefix>location_on</mat-icon>
-            <mat-select placeholder="UF" formControlName="uf_id">
-              <mat-option *ngFor="let uf of ufArray" [value]="uf.id">
-                {{ uf.description }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div> -->
-
-        <div class="flex">
+        <div class="flex" *ngIf="submitToCreate">
           
           <mat-form-field>
             <mat-icon class="icon-pattern" matPrefix>lock</mat-icon>
-            <input matInput formControlName="password" type="password" placeholder="Senha*" tag="input" validatorField validatorPassword [required]="show">
+            <input matInput formControlName="password" type="password" placeholder="Senha" required>
+            <mat-error *ngIf="userRegisterForm.get('password').errors && userRegisterForm.get('password').touched">{{userRegisterForm.get('password').errors.message}}</mat-error>
           </mat-form-field>
 
-          <mat-form-field >
+          <mat-form-field>
             <mat-icon class="icon-pattern" matPrefix>lock</mat-icon>
-            <input  matInput formControlName="repeatPassword" type="password" placeholder="Repetir senha" tag="input" [required]="show" validatorField validatorPassword validatorComparison fieldsToCompare="password,repeatPassword">
+            <input matInput formControlName="repeatPassword" type="password" placeholder="Repetir senha" required>
+            <mat-error *ngIf="userRegisterForm.get('repeatPassword').errors && userRegisterForm.get('repeatPassword').touched">{{userRegisterForm.get('repeatPassword').errors.message}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -76,28 +42,14 @@
   
           <div class="form-pattern-checkbox-iteration">
             <div class="flex" *ngFor="let profile of profileArray" >
-              <mat-checkbox [value]="profile" [checked]="profile._checked" class="profile-checkboxes"
-              (change)="addProfileId($event)"
-              [disabled]="profile._disabled">{{ profile.description }}</mat-checkbox>
+              <mat-checkbox [value]="profile" [checked]="userHasProfile(user, profile)" class="profile-checkboxes"
+              (change)="addProfileId($event)">{{ profile.description }}</mat-checkbox>
 
             </div>
             
           </div>
         </div>
-
-        <!-- <div class="flex">
-          
-            <mat-form-field class="half-input">
-              <mat-icon class="icon-pattern" matPrefix>account_circle</mat-icon>
-              <mat-select placeholder="Perfil" formControlName="access_profiles">
-                <mat-option *ngFor="let item of profileArray" [value]="item.id">
-                  {{ item.description }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div> -->
-
-       
+     
         <mat-card>
           <mat-toolbar>
             <div id="toolbar-title">Menu e Permissões</div>
@@ -113,13 +65,10 @@
                 <tr *ngFor="let menu of menus; let i = index">
                   <td id="menu"><mat-checkbox (change)="checkallRule(menu.id,$event)">{{menu.description}}</mat-checkbox></td>
                   <td *ngFor="let rule of menu.rules;" [ngStyle]="{'text-align': 'center'}">                    
-                    <!-- <mat-checkbox #myCheckbox value="{{ruleMenu(menu.id, rule.id)[0]?.id}}" attr.data-ruleID="{{rule.id}}" 
-                    name="{{menu.id}}" [attr.data-touched]="false" (click)="forceRule(ruleMenu(menu.id, rule.id)[0]?.id,$event)"
-                    [checked]="userHasMenuRule(user.menu_rules, menu.id, rule.id) && userMenuRule(user.menu_rules, menu.id, rule.id)?.pivot.modification != 'REMOVED'"  
-                    ></mat-checkbox> -->
-                    <input type="checkbox" value="{{ruleMenu(menu.id, rule.id)[0]?.id}}" [attr.data-touched]="false" name="menu_rules[]" (click)="forceRule($event)" 
-                    [checked]="userHasMenuRule(user.menu_rules, menu.id, rule.id) && userMenuRule(user.menu_rules, menu.id, rule.id)?.pivot.modification != 'REMOVED'" 
-                    >
+                    <mat-checkbox #myCheckbox value="{{ruleMenu(menu.id, rule.id)[0]?.id}}" attr.data-ruleID="{{rule.id}}" 
+                    name="{{menu.id}}" (change)="forceRule($event)"[checked]="userHasMenuRule(user, menu.id, rule.id) && 
+                    userMenuRule(user.menu_rules, menu.id, rule.id)?.pivot.modification != 'REMOVED'"  
+                    ></mat-checkbox> 
                   </td>
                 </tr> 
               </tbody> 
@@ -136,7 +85,7 @@
       
         <mat-dialog-actions class="box-clear">
           <div class="box-left">
-            <button mat-raised-button type="submit" color="primary" [disabled]="!userRegisterForm.valid">{{submitButton}}</button> 
+            <button mat-raised-button type="submit" color="primary" >{{submitButton}}</button> 
             <a mat-raised-button (click)="clearForm(formDirective)" >Limpar</a>
             <a mat-raised-button routerLink="/main/user">Voltar</a>
           </div>

@@ -76,7 +76,7 @@ export class UserComponent implements OnInit {
           { columnDef: 'uf', header: 'UF', cell: (row: User) => `${row.uf == null ? '' : row.uf}`},
           { columnDef: 'email', header: 'Descrição', cell: (row: User) => `${row.email}` },
           { columnDef: 'profiles', header: 'Perfis de acesso', cell: (row: User) => `${row.profiles}` },
-          { columnDef: 'deleted_at', header: 'Status', cell: (row: User) => `${row.deleted_at}`}
+          { columnDef: 'deleted_at', header: 'Status', cell: (row: User) => `${row.is_active}`}
         ],
         edit: {route: '/main/user-update/', param: 'id'},
         permissions: this.userPemissions
@@ -98,6 +98,6 @@ export interface User {
   name: string;
   uf: any;
   email: string;
-  deleted_at: string;
+  is_active: string;
   profiles: any;
 }

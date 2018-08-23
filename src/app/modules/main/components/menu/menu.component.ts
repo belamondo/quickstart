@@ -176,9 +176,12 @@ export class MenuComponent implements OnInit {
         }
         this._snackbar.open(string, '', {
           duration: 2000,
-          // extraClasses: [snackClass]
+          panelClass: [snackClass]
 
         });
+        this.makeList();
+        // this.status = this.menuForm.controls.is_active ? 'Inativo' : 'Ativo';
+        this._router.navigate(['/main/menu']);
       }, rej => {
           for (let i = 0; i < rej['errors'].length; i++) {
             this.snackBarService.add(rej['errors'][i]);
@@ -186,8 +189,6 @@ export class MenuComponent implements OnInit {
       });
       // this.status = this.menuForm.controls.is_active ? 'Inativo' : 'Ativo';
       // formDirective.resetForm();
-      this.makeList();
-      this._router.navigate(['/main/menu']);
 
     } else if (this.submitToCreate) {
       let params;
@@ -197,7 +198,8 @@ export class MenuComponent implements OnInit {
       };
       this._crud.create(params)
       .then(res => {
-        this._snackbar.open(res['message'], '', {
+        const message = 'Menu cadastrado com sucesso.';
+        this._snackbar.open(message, '', {
           duration: 2000,
           panelClass: ['success-snackbar']
         });

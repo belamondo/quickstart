@@ -29,14 +29,10 @@ export class MainComponent implements OnInit {
     icon: 'home',
     link: ['dashboard']
   }, {
-    name: 'Regras',
+    name: 'Usuários',
     icon: 'account_circle',
-    link: ['rule']
-  }/*, {
-    name: 'Playground',
-    icon: 'account_circle',
-    link: 'playground'
-  }*/
+    link: ['user']
+  }
   ];
 
   constructor(
